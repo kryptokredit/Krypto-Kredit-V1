@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import {
@@ -115,10 +115,10 @@ const queryClaimer = `
 const APIURL =
   "https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph";
 
-const client = new ApolloClient({
+const client = useMemo(() => new ApolloClient({
   uri: APIURL,
   cache: new InMemoryCache(),
-});
+}),[]);
 
 const getGraph = useCallback(async () => {
   if (!account) {
