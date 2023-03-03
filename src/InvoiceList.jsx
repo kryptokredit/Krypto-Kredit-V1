@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import {
@@ -146,7 +146,7 @@ const queryClaimer = `
     cache: new InMemoryCache(),
   });
 
-   const getGraph = async () => {
+    const getGraph = useCallback(async () =>  {
      if (!account) {
        client
          .query({
@@ -162,7 +162,7 @@ const queryClaimer = `
      } else {
        console.log("FUUUUUUUUUUUCKKKK");
      }
-   };
+   },[]);
 
   const filterData = (status) => {
     if (status === "all") {
