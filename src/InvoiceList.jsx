@@ -111,7 +111,7 @@ function InvoiceList() {
 
          // Save the account to the state
          setAccount(accounts[0]);
-         console.log("ACCOUNTSS",accounts[0])
+         console.log("ACCOUNTSS", accounts[0]);
          await getGraph();
        } catch (error) {
          console.log(error);
@@ -120,8 +120,7 @@ function InvoiceList() {
    }
 
    fetchAccount();
-   
- }, []);
+ }, [getGraph]);
   
 const queryClaimer = `
     query {
