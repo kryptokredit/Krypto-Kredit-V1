@@ -96,6 +96,48 @@ function InvoiceList() {
   const [account, setAccount] = useState("");
   const [ graphData, setGraphData ] = useState("");
 
+const queryClaimer = `
+    query {
+      invoiceCreateds(where: { invoicer: "0x1ecea29029b81981cb9b25a3f4623828b9e8204c"} ) {
+        id
+        idInvoice
+        invoicer
+        payer
+        dueDate
+        fee
+        amount
+        blockNumber
+        blockTimestamp
+      }
+    }
+    `;
+
+const APIURL =
+  "https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph";
+
+const client = new ApolloClient({
+  uri: APIURL,
+  cache: new InMemoryCache(),
+});
+
+const getGraph = useCallback(async () => {
+  if (!account) {
+    client
+      .query({
+        query: gql(queryClaimer),
+      })
+      .then((data) => {
+        console.log("DATAAAA", data.data);
+        setGraphData(data.data);
+      })
+      .catch((err) => {
+        console.log("Error fetching data: ", err);
+      });
+  } else {
+    console.log("FUUUUUUUUUUUCKKKK");
+  }
+}, [account, client, queryClaimer]);
+
  useEffect(() => {
    async function fetchAccount() {
      // Check if Web3 is available and if Metamask is installed
@@ -122,47 +164,7 @@ function InvoiceList() {
    fetchAccount();
  }, [getGraph]);
   
-const queryClaimer = `
-    query {
-      invoiceCreateds(where: { invoicer: "0x1ecea29029b81981cb9b25a3f4623828b9e8204c"} ) {
-        id
-        idInvoice
-        invoicer
-        payer
-        dueDate
-        fee
-        amount
-        blockNumber
-        blockTimestamp
-      }
-    }
-    `;
 
-  const APIURL =
-    "https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph";
-
-  const client = new ApolloClient({
-    uri: APIURL,
-    cache: new InMemoryCache(),
-  });
-
-    const getGraph = useCallback(async () =>  {
-     if (!account) {
-       client
-         .query({
-           query: gql(queryClaimer),
-         })
-         .then((data) => {
-           console.log("DATAAAA", data.data);
-           setGraphData(data.data);
-         })
-         .catch((err) => {
-           console.log("Error fetching data: ", err);
-         });
-     } else {
-       console.log("FUUUUUUUUUUUCKKKK");
-     }
-   },[]);
 
   const filterData = (status) => {
     if (status === "all") {
