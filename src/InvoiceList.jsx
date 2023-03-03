@@ -146,24 +146,23 @@ const queryClaimer = `
     cache: new InMemoryCache(),
   });
 
-  async function getGraph() {
-    if(!account) {
-
-    client
-      .query({
-        query: gql(queryClaimer),
-      })
-      .then((data) => {
-        console.log("DATAAAA", data.data);
-        setGraphData(data.data);
-      })
-      .catch((err) => {
-        console.log("Error fetching data: ", err);
-      });
-    } else {
-      console.log("FUUUUUUUUUUUCKKKK")
-    }
-  }
+   const getGraph = async () => {
+     if (!account) {
+       client
+         .query({
+           query: gql(queryClaimer),
+         })
+         .then((data) => {
+           console.log("DATAAAA", data.data);
+           setGraphData(data.data);
+         })
+         .catch((err) => {
+           console.log("Error fetching data: ", err);
+         });
+     } else {
+       console.log("FUUUUUUUUUUUCKKKK");
+     }
+   };
 
   const filterData = (status) => {
     if (status === "all") {
