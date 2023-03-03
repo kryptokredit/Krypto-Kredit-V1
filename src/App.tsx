@@ -140,101 +140,101 @@ const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);  const [provide
     init();
   }, []);
 
-  // const login = async () => {
-  //   if (!web3auth) {
-  //     uiConsole("web3auth not initialized yet");
-  //     return;
-  //   }
-  //   const web3authProvider = await web3auth.connect();
-  //   setProvider(web3authProvider);
-  //   uiConsole("Logged in Successfully!");
-  // };
+  const login = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3auth.connect();
+    setProvider(web3authProvider);
+    uiConsole("Logged in Successfully!");
+  };
 
-  // const authenticateUser = async () => {
-  //   if (!web3auth) {
-  //     uiConsole("web3auth not initialized yet");
-  //     return;
-  //   }
-  //   const idToken = await web3auth.authenticateUser();
-  //   uiConsole(idToken);
-  // };
+  const authenticateUser = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const idToken = await web3auth.authenticateUser();
+    uiConsole(idToken);
+  };
 
-  // const getUserInfo = async () => {
-  //   if (!web3auth) {
-  //     uiConsole("web3auth not initialized yet");
-  //     return;
-  //   }
-  //   const user = await web3auth.getUserInfo();
-  //   uiConsole(user);
-  // };
+  const getUserInfo = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const user = await web3auth.getUserInfo();
+    uiConsole(user);
+  };
 
-  // const logout = async () => {
-  //   if (!web3auth) {
-  //     uiConsole("web3auth not initialized yet");
-  //     return;
-  //   }
-  //   await web3auth.logout();
-  //   setProvider(null);
-  // };
+  const logout = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    await web3auth.logout();
+    setProvider(null);
+  };
 
-  // const getChainId = async () => {
-  //   if (!provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(provider);
-  //   const chainId = await rpc.getChainId();
-  //   uiConsole(chainId);
-  // };
-  // const getAccounts = async () => {
-  //   if (!provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(provider);
-  //   const address = await rpc.getAccounts();
-  //   uiConsole(address);
-  // };
+  const getChainId = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const chainId = await rpc.getChainId();
+    uiConsole(chainId);
+  };
+  const getAccounts = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const address = await rpc.getAccounts();
+    uiConsole(address);
+  };
 
-  // const getBalance = async () => {
-  //   if (!provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(provider);
-  //   const balance = await rpc.getBalance();
-  //   uiConsole(balance);
-  // };
+  const getBalance = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const balance = await rpc.getBalance();
+    uiConsole(balance);
+  };
 
-  // const sendTransaction = async () => {
-  //   if (!provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(provider);
-  //   const receipt = await rpc.sendTransaction();
-  //   uiConsole(receipt);
-  // };
+  const sendTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.sendTransaction();
+    uiConsole(receipt);
+  };
 
-  // const signMessage = async () => {
-  //   if (!provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(provider);
-  //   const signedMessage = await rpc.signMessage();
-  //   uiConsole(signedMessage);
-  // };
+  const signMessage = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const signedMessage = await rpc.signMessage();
+    uiConsole(signedMessage);
+  };
 
-  // const getPrivateKey = async () => {
-  //   if (!provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(provider);
-  //   const privateKey = await rpc.getPrivateKey();
-  //   uiConsole(privateKey);
-  // };
+  const getPrivateKey = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const privateKey = await rpc.getPrivateKey();
+    uiConsole(privateKey);
+  };
 
   // const changeNetwork = async () => {
   //   if (!provider) {
