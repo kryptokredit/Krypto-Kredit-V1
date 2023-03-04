@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback,useEffect, useMemo } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import {
@@ -7,6 +7,7 @@ import {
   paidColumns,
   unpaidColumns,
 } from "./helpers/columns";
+const { ApolloClient, InMemoryCache, gql } = require("@apollo/client");
 
 // const conditionalRowStyles = [
 //   {
@@ -91,8 +92,79 @@ function PayerInvoiceList() {
   const [data, setData] = useState(allData);
   const [selectedStatus, setSelectedStatus] = useState("all");
   // const [showCheckboxes, setShowCheckboxes] = useState(false);
-
   const [columns, setColumns] = useState(allColumns);
+  const [account, setAccount] = useState("");
+  const [graphData, setGraphData] = useState("");
+
+const GET_POTENTIAL_INVOICES = gql`
+  query GetPotentialInvoices($payer: String!) {
+    potentialInvoices(where: { payer: $payer }) {
+      id
+      idInvoice
+      invoicer
+      payer
+      dueDate
+      fee
+      amount
+      blockNumber
+      blockTimestamp
+    }
+  }
+`;
+
+  const APIURL =
+    "https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph";
+
+  const client = useMemo(
+    () =>
+      new ApolloClient({
+        uri: APIURL,
+        cache: new InMemoryCache(),
+      }),
+    []
+  );
+
+ const getGraph = useCallback(async () => {
+   if (!account) {
+     return;
+   }
+
+   try {
+     const { data } = await client.query({
+       query: GET_POTENTIAL_INVOICES,
+       variables: { payer: account },
+     });
+     setGraphData(data.potentialInvoices);
+   } catch (error) {
+     console.error("Error fetching data:", error);
+   }
+ }, [account, client, GET_POTENTIAL_INVOICES]);
+
+  useEffect(() => {
+    async function fetchAccount() {
+      // Check if Web3 is available and if Metamask is installed
+      if (window.ethereum) {
+        try {
+          // Request account access if needed
+          await window.ethereum.enable();
+
+          // Get the user's Metamask account address
+          const accounts = await window.ethereum.request({
+            method: "eth_accounts",
+          });
+
+          // Save the account to the state
+          setAccount(accounts[0]);
+          console.log("ACCOUNTSS", accounts[0]);
+          await getGraph();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+
+    fetchAccount();
+  }, [getGraph]);
 
   const filterData = (status) => {
     if (status === "all") {
@@ -111,6 +183,7 @@ function PayerInvoiceList() {
 
       setColumns(outstandingColumns);
     }
+
     setSelectedStatus(status);
   };
 
@@ -169,7 +242,7 @@ function PayerInvoiceList() {
           </button>
         </div>
         <div style={{ border: "3px solid #12E26C", borderRadius: "20px" }}>
-          <DataTable columns={columns} customTheme={customTheme} data={data} />
+          <DataTable columns={columns} customTheme={customTheme} data={graphData} />
         </div>
 
         <Link to="/invoiceForm" style={{ textDecoration: "none" }}>

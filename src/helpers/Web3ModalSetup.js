@@ -11,18 +11,13 @@ const walletLink = new WalletLink({
   appName: "coinbase",
 });
 
-// WalletLink provider
 const walletLinkProvider = walletLink.makeWeb3Provider(`https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`, 1);
 
-// Portis ID: 6255fb2b-58c8-433b-a2c9-62098c05ddc9
-/**
-  Web3 modal helps us "connect" external wallets:
-**/
 const web3ModalSetup = () =>
   new SafeAppWeb3Modal({
-    network: "mainnet", // Optional. If using WalletConnect on xDai, change network to "xdai" and add RPC info below for xDai chain.
-    cacheProvider: true, // optional
-    theme: "light", // optional. Change to "dark" for a dark theme.
+    network: "mainnet", 
+    cacheProvider: true, 
+    theme: "light", 
     providerOptions: {
       walletconnect: {
         package: WalletConnectProvider, // required

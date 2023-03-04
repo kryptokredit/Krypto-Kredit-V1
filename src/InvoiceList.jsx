@@ -84,10 +84,6 @@ const allData = [
 ];
 
 function InvoiceList() {
-  // const { loading, error, data } = useQuery(INVOICE_CREATEDS_QUERY);
-
-  // if (loading) return <p>Loading...</p>;
-  // if (error) return <p>Error :(</p>;
 
   const [data, setData] = useState(allData);
   const [selectedStatus, setSelectedStatus] = useState("all");
@@ -96,47 +92,45 @@ function InvoiceList() {
   const [account, setAccount] = useState("");
   const [ graphData, setGraphData ] = useState("");
 
-const queryClaimer = `
-    query {
-      invoiceCreateds(where: { invoicer: "0x1ecea29029b81981cb9b25a3f4623828b9e8204c"} ) {
-        id
-        idInvoice
-        invoicer
-        payer
-        dueDate
-        fee
-        amount
-        blockNumber
-        blockTimestamp
-      }
+const GET_INVOICE_CREATEDS_QUERY = gql`
+  query GetInvoiceCreateds($invoicer: String!) {
+    invoiceCreateds(where: { invoicer: $invoicer }) {
+      id
+      idInvoice
+      invoicer
+      payer
+      dueDate
+      fee
+      amount
+      blockNumber
+      blockTimestamp
     }
-    `;
-
-const APIURL =
-  "https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph";
+  }
+`;
+const API_URL = "https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph";
 
 const client = useMemo(() => new ApolloClient({
-  uri: APIURL,
+  uri: API_URL,
   cache: new InMemoryCache(),
 }),[]);
 
 const getGraph = useCallback(async () => {
-  if (!account) {
-    client
-      .query({
-        query: gql(queryClaimer),
-      })
-      .then((data) => {
-        console.log("DATAAAA", data.data);
-        setGraphData(data.data);
-      })
-      .catch((err) => {
-        console.log("Error fetching data: ", err);
+  if (account) {
+    try {
+      const { data } = await client.query({
+        query: GET_INVOICE_CREATEDS_QUERY,
+        variables: {
+          invoicer: account
+        }
       });
-  } else {
-    console.log("FUUUUUUUUUUUCKKKK");
+      console.log("DATA", data);
+      setGraphData(data.invoiceCreateds);
+    } catch (error) {
+      console.log("Error fetching data: ", error);
+    }
   }
-}, [account, client, queryClaimer]);
+}, [account, client, GET_INVOICE_CREATEDS_QUERY]);
+
 
  useEffect(() => {
    async function fetchAccount() {
@@ -189,7 +183,7 @@ const getGraph = useCallback(async () => {
 
   return (
     <div>
-      {" "}
+  
       <h1 style={{ textAlign: "center", color: "black" }}>My Invoices</h1>
       <div
         style={{
