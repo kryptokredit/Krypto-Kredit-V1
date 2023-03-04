@@ -70,11 +70,12 @@ export const removeAddressFromWhitelist = async (account) => {
     .send({ from: account });
 };
 
-export const createInvoice = async (amount, dueDate, payer, validator, fee) => {
+export const createInvoice = async (amount, dueDate, payer, validator, fee,id) => {
   const account = await fetchAccount();
-  return await contract.methods
+  await contract.methods
     .createInvoice(amount, dueDate, payer, validator, fee)
     .send({ from: account });
+   await signInvoiceInvoicer(id);
 };
 
 export const signInvoiceInvoicer = async (id) => {

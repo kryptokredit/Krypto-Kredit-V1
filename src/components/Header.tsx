@@ -16,31 +16,12 @@ const clientId =
 
 function Header() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] =
+    useState<SafeEventEmitterProvider | null>(null);
   const [user, setUser] = useState<String | null>(null);
   const [userToken, setUserToken] = useState<String | null>(null);
-async function fetchAccount() {
-  // Check if Web3 is available and if Metamask is installed
-  if (typeof window.ethereum !== "undefined") {
-   if (window.ethereum) {
-     try {
-       await window.ethereum.enable();
+  const [stringAccount, setStringAccount] = useState<String | null>(null);
 
-       const accounts = await window.ethereum.request({
-         method: "eth_accounts",
-       });
-
-       console.log("ACCOUNTSS", accounts[0]);
-       return accounts[0];
-     } catch (error) {
-       console.log(error);
-     }
-   }
-  }
-
-}
   useEffect(() => {
     const init = async () => {
       try {
@@ -49,8 +30,7 @@ async function fetchAccount() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x13881",
-            rpcTarget:
-              "https://polygon-mumbai.blockpi.network/v1/rpc/public	",
+            rpcTarget: "https://polygon-mumbai.blockpi.network/v1/rpc/public	",
           },
           uiConfig: {
             theme: "dark",
@@ -107,8 +87,7 @@ async function fetchAccount() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x13881",
-            rpcTarget:
-              "https://polygon-mumbai.blockpi.network/v1/rpc/public	",
+            rpcTarget: "https://polygon-mumbai.blockpi.network/v1/rpc/public	",
           },
         });
         metamaskAdapter.setAdapterSettings({
@@ -116,8 +95,7 @@ async function fetchAccount() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x13881",
-            rpcTarget:
-              "https://polygon-mumbai.blockpi.network/v1/rpc/public	",
+            rpcTarget: "https://polygon-mumbai.blockpi.network/v1/rpc/public	",
           },
           web3AuthNetwork: "cyan",
         });
@@ -136,16 +114,13 @@ async function fetchAccount() {
         if (web3auth.provider) {
           setProvider(web3auth.provider);
         }
-            getAccounts();
-            login();
       } catch (error) {
         console.error(error);
       }
     };
 
     init();
-
-  },[user]);
+  }, [user, userToken]);
 
   const login = async () => {
     if (!web3auth) {
@@ -263,70 +238,121 @@ async function fetchAccount() {
     }
   }
 
+  useEffect(() => {
+    async function fetchAccount() {
+      // Check if Web3 is available and if Metamask is installed
+      if (typeof window.ethereum !== "undefined") {
+        if (window.ethereum) {
+          try {
+            await window.ethereum.enable();
+
+            const accounts = await window.ethereum.request({
+              method: "eth_accounts",
+            });
+
+            console.log("ACCOUNTSS", accounts[0]);
+            setStringAccount(
+              user ? user.slice(0, 5) + "..." + user.slice(39, 42) : "Connect"
+            );
+            return accounts[0];
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    }
+    getAccounts();
+    login();
+    fetchAccount();
+  }, [getAccounts, login, user]);
+
   return (
-    <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="/">
-        <img
-          src="/KryptoKreditLogo.png"
-          alt="Logo"
-          style={{ width: "200px" }}
-        />
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav " className="justify-content-end">
-        <Nav className="mr-auto">
-          <Dropdown as={Nav.Item}>
-            <Dropdown.Toggle as={Nav.Link} style={{ marginRight: "15px" }}>
-              Invoicer
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="/InvoiceList">My Invoices</Dropdown.Item>
-              <Dropdown.Item href="/InvoiceForm">
-                Create an Invoice
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          <Dropdown as={Nav.Item}>
-            <Dropdown.Toggle as={Nav.Link} style={{ marginRight: "15px" }}>
-              Payer
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="/PayerInvoiceList">
-                My Invoices
-              </Dropdown.Item>
-              <Dropdown.Item href="/MyDashboard">My Dashboard</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          <Nav.Item>
-            <button
-              style={{
-                fontSize: "12px" /* adjust the font size as needed */,
-                fontWeight: "bold",
-                color:
-                  "#fff" /* set the font color to contrast with the background color */,
-                backgroundColor: "#12E26C",
-                border: "none",
-                borderRadius: "4px",
-                padding: "10px 20px",
-                transition: "all 0.3s ease-in-out",
-                marginRight: "15px",
-              }}
-              onClick={() => {
-                if (!user) {
-                  login();
-                } else {
-                  logout();
-                }
-              }}
-            >
-              {user?
-                 user.slice(0, 5) + "..." + user.slice(39, 42)
-                : "Connect"}
-            </button>
-          </Nav.Item>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+    <div className="b-flex w-auto px-5 bg-light">
+      <div></div>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="/">
+          <img
+            src="/KryptoKreditLogo.png"
+            alt="Logo"
+            style={{ width: "200px" }}
+          />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav " className="justify-content-end">
+          <Nav className="ml-auto justify-content-end">
+            <div className="d-flex w-auto justify-content-center">
+              <div className="d-flex justify-content-around">
+                <div className="">
+                  <Dropdown as={Nav.Item}>
+                    <Dropdown.Toggle
+                      as={Nav.Link}
+                      style={{ marginRight: "15px" }}
+                    >
+                      Invoicer
+                    </Dropdown.Toggle>
+                    <div className="position-absolute">
+                      <Dropdown.Menu>
+                        <Dropdown.Item href="/InvoiceList">
+                          My Invoices
+                        </Dropdown.Item>
+                        <Dropdown.Item href="/InvoiceForm">
+                          Create an Invoice
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </div>
+                  </Dropdown>
+                </div>
+
+                <Dropdown as={Nav.Item}>
+                  <Dropdown.Toggle
+                    as={Nav.Link}
+                    style={{ marginRight: "15px" }}
+                  >
+                    Payer
+                  </Dropdown.Toggle>
+                  <div className="position-absolute">
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="/PayerInvoiceList">
+                        My Invoices
+                      </Dropdown.Item>
+                      <Dropdown.Item href="/MyDashboard">
+                        My Dashboard
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </div>
+                </Dropdown>
+                <button
+                  style={{
+                    fontSize: "12px" /* adjust the font size as needed */,
+                    fontWeight: "bold",
+                    color:
+                      "#fff" /* set the font color to contrast with the background color */,
+                    backgroundColor: "#12E26C",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "10px 20px",
+                    transition: "all 0.3s ease-in-out",
+                    marginRight: "15px",
+                    width: "110px",
+                  }}
+                  onClick={() => {
+                    if (user) {
+                      logout();
+                    } else {
+                      login();
+                    }
+                  }}
+                >
+                  {stringAccount}
+                </button>
+              </div>
+            </div>
+
+            <Nav.Item></Nav.Item>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </div>
   );
 }
 

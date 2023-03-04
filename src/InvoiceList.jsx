@@ -268,7 +268,7 @@ const getGraph = useCallback(async () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
-            + Create an Invoice
+            {window.innerWidth < 768 ? "+" : "+ Create an Invoice"}
           </button>
         </Link>
       </div>

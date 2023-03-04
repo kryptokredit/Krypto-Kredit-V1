@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useSpectral, score } from "@spectral-finance/spectral-modal";
-import { Alignment } from "react-data-table-component";
+import React, { useState } from "react";
+import { useSpectral } from "@spectral-finance/spectral-modal";
+import { signInvoiceInvoicer, createInvoice } from "./components/factoryWeb3";
 
 
 function InvoiceForm() {
@@ -63,7 +63,7 @@ const handleDueDateChange = (timestamp) => {
 
   const handleValidatorWalletAddressChange = (event) => {
     setValidatorWalletAddress(event.target.value);
-    console.log("WalletAddress:", event.target.value);
+    console.log("Validator:", event.target.value);
   };
 
   const handleDescriptionChange = (event) => {
@@ -72,6 +72,7 @@ const handleDueDateChange = (timestamp) => {
   };
 
   async function handleCreation(){
+    
     const Web3 = require("web3");
 
     // Instantiate a Web3 instance using window.ethereum as the provider
@@ -85,27 +86,20 @@ const handleDueDateChange = (timestamp) => {
     // Create a new instance of the contract object
     const contractAddress = "0xB98f4c2a758eB57963c38a5e276d1Ad361bC16aa";
     const contract = new web3.eth.Contract(abi, contractAddress);
-    await contract.methods
-      .createInvoice(
+    console.log(amount,dueDate,payerWalletAddress,validatorWalletAddress,lateFee)
+    console.log("FACTORY CONTRACT",contract)
+    const id = await contract.methods.invoiceCount().call();
+    await createInvoice(
         amount,
         dueDate,
         payerWalletAddress,
         validatorWalletAddress,
-        lateFee
-      )
-      .send({ from: user });}
+        lateFee,
+        id
+      )}
   
   const { start, score } = useSpectral();
-  const [myScore, setMyScore] = useState();
 
-  useEffect(() => {
-    if (!score) {
-      console.log("Score not calculated");
-      return;
-    }
-    console.log(`Hooray! your score is ${score}`);
-    setMyScore(score);
-  }, [score]);
 
   return (
     <div className="p-4">
@@ -124,8 +118,8 @@ const handleDueDateChange = (timestamp) => {
           Create an Invoice
         </h1>
         <form>
-          <div className="row mb-3">
-            <div className="col-lg-6 mb-3 mb-lg-0">
+          <div className="rowmb-2">
+            <div className="col-lg-6mb-2 mb-lg-0">
               <div className="form-group my-3">
                 <label htmlFor="input1" className="text-dark">
                   Amount
@@ -174,8 +168,8 @@ const handleDueDateChange = (timestamp) => {
             </div>
           </div>
 
-          <div className="row mb-3">
-            <div className="col-lg-6 mb-3 mb-lg-0">
+          <div className="rowmb-2">
+            <div className="col-lg-6mb-2 mb-lg-0">
               <div className="form-group my-3">
                 <label htmlFor="input3" className="text-dark">
                   Select Token
@@ -228,14 +222,29 @@ const handleDueDateChange = (timestamp) => {
                 </div>
               </div>
             </div>
+            <div className="d-flex">
+              <img
+              src="https://uploads-ssl.webflow.com/6384dc706c77d5664d1a1d65/6384dc706c77d5d2fc1a1dbd_logo.png"
+              alt="spectral logo"
+              style={{
+                backgroundColor: "black",
+                width: "100%",
+                height: "50px",
+                maxWidth: "200px",
+                display: "block",
+                margin: "0 auto",
+              }}
+            />
             <div className="d-flex justify-content-center text-center">
               <button
                 type="button"
-                className="d-flex justify-content-center w-50"
+                className="d-flex justify-content-center w-100 h-50px"
                 onClick={start}
               >
                 Calculate Spectral Score
               </button>
+            </div>
+            
             </div>
 
             <div className="col-lg-6">
@@ -264,8 +273,8 @@ const handleDueDateChange = (timestamp) => {
                 />
               </div>
             </div>
-            <div className="row mb-3">
-              <div className="col-lg-6 mb-3 mb-lg-0">
+            <div className="rowmb-2">
+              <div className="col-lg-6mb-2 mb-lg-0">
                 <div className="form-group my-3">
                   <label htmlFor="input6" className="text-dark">
                     Late Fee
@@ -283,7 +292,7 @@ const handleDueDateChange = (timestamp) => {
                   />
                 </div>
               </div>
-              <div className="col-lg-6 mb-3 mb-lg-0">
+              <div className="col-lg-6mb-2 mb-lg-0">
                 <div className="form-group my-3">
                   <label htmlFor="input7" className="text-dark">
                     Validator Wallet Address
@@ -303,7 +312,7 @@ const handleDueDateChange = (timestamp) => {
             <div></div>
           </div>
           <div></div>
-          <div className="row mb-3">
+          <div className="rowmb-2">
             <div className="col-lg-12">
               <div className="form-group my-3 text-left">
                 <label
@@ -330,8 +339,10 @@ const handleDueDateChange = (timestamp) => {
               <button
                 className="btn btn-lg "
                 style={{ backgroundColor: "#12E26C" }}
-                onClick={() => {
+                onClick={(event) => {
+                  event.preventDefault();
                   handleCreation();
+                  signInvoiceInvoicer();
                 }}
               >
                 Submit

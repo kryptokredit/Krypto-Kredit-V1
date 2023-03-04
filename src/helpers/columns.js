@@ -46,7 +46,9 @@ export const allColumns = [
     cell: (row) => (
       <button
         className="btn  btn-sm"
-        onClick={() => {mintTheInvoice(row.idInvoice)}}
+        onClick={() => {
+          mintTheInvoice(row.idInvoice);
+        }}
         style={{ width: "80px", height: "auto", backgroundColor: "#12E26C" }}
       >
         Mint
@@ -54,7 +56,11 @@ export const allColumns = [
     ),
   },
   {
-    name: <span style={{ fontWeight: "bold" }}>View invoice</span>,
+    name: (
+      <span style={{ fontWeight: "bold" }}>
+        {window.innerWidth < 768 ? "+" : "+ Create an Invoice"}
+      </span>
+    ),
     selector: "view",
     cell: (row) => (
       <button
@@ -62,7 +68,7 @@ export const allColumns = [
         onClick={() => signInvoicePayer(row.idInvoice)}
         style={{ width: "120px", height: "auto" }}
       >
-        View invoice
+        {window.innerWidth < 768 ? "View" : "View Invoice"}
       </button>
     ),
   },

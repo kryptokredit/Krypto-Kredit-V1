@@ -1,3 +1,4 @@
+import { signInvoicePayer } from "../components/factoryWeb3";
 export const allColumns = [
   {
     name: <span style={{ fontWeight: "bold" }}>ID</span>,
@@ -35,15 +36,19 @@ export const allColumns = [
     ),
   },
   {
-    name: <span style={{ fontWeight: "bold" }}>View invoice</span>,
+    name: (
+      <span style={{ fontWeight: "bold" }}>
+        {window.innerWidth < 768 ? "View" : "View Invoice"}
+      </span>
+    ),
     selector: "view",
     cell: (row) => (
       <button
         className="btn btn-primary"
-        onClick={() => console.log(`Sell ${row.id}`)}
+        onClick={() => signInvoicePayer(row.idInvoice)}
         style={{ width: "120px", height: "auto" }}
       >
-        View invoice
+        {window.innerWidth < 768 ? "View" : "View Invoice"}
       </button>
     ),
   },
@@ -65,7 +70,7 @@ export const unpaidColumns = [
 
   {
     name: <span style={{ fontWeight: "bold" }}>Pay</span>,
-    selector: "pay",
+    selector: (row) => row.paid,
     cell: (row) => (
       <button
         className="btn btn-success btn-sm"

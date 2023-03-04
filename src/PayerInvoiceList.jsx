@@ -15,14 +15,35 @@ function PayerInvoiceList() {
   const [account, setAccount] = useState("");
   const [graphData, setGraphData] = useState("");
   // const { loading, error, data } = useQuery(INVOICE_CREATEDS_QUERY);
+  useEffect(() => {
+    async function fetchAccount() {
+      // Check if Web3 is available and if Metamask is installed
+      if (typeof window.ethereum !== "undefined") {
+        if (window.ethereum) {
+          try {
+            await window.ethereum.enable();
 
+            const accounts = await window.ethereum.request({
+              method: "eth_accounts",
+            });
+
+            console.log("ACCOUNTSS", accounts[0]);
+            setAccount(accounts[0])
+            return accounts[0];
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    }
+    fetchAccount();
+  }, []);
   // const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [payercolumns, setColumns] = useState(allColumns);
-  const [isHovering, setIsHovering] = useState(false);
+
   const GET_POTENTIAL_INVOICES = gql`
     query GetPotentialInvoices($payer: String!) {
       potentialInvoices(where: { payer: $payer }) {
-        id
         idInvoice
         invoicer
         payer
@@ -47,8 +68,9 @@ function PayerInvoiceList() {
     []
   );
 
+
+
   const getGraph = useCallback(async () => {
-    let newArray = [];
     if (!account) {
       return;
     }
@@ -58,14 +80,14 @@ function PayerInvoiceList() {
         query: GET_POTENTIAL_INVOICES,
         variables: { payer: account },
       });
-      let i = 0;
-      const length = data.potentialInvoices.length;
-      for (i; i < length; i++) {
-        const paidInvoice = getInvoice(i).paid;
-        const outstanding = data.data.potentialInvoices[i].dueDate > Date.now();
-        let newData = [];
-        const row = data.potentialInvoices[i];
-        newData =[ {
+
+      const newArray = data.potentialInvoices.map((row) => {
+        console.log("ROOOOW",row)
+        const invoice = getInvoice(row.idInvoice);
+        console.log("INVOICE",invoice)
+        const paidInvoice = invoice.paid;
+        const outstanding = invoice.dueDate > Date.now();
+        return {
           amount: row.amount,
           blockNumber: row.blockNumber,
           blockTimestamp: row.blockTimestamp,
@@ -75,51 +97,31 @@ function PayerInvoiceList() {
           idInvoice: row.idInvoice,
           invoicer: row.invoicer,
           payer: row.payer,
-          status: paidInvoice ? "paid" : outstanding ? "outstanding" : "unpaid",
-        }];
-        console.log("New DATA",newData);
-        newArray.push(newData)
-      }
+          paid: paidInvoice,
+          status: paidInvoice ? "Paid" : outstanding ? "Outstanding" : "Unpaid",
+        };
+      });
+      console.log("GRAPH DATA", newArray);
       setGraphData(newArray);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [account, client, GET_POTENTIAL_INVOICES]);
+  }, [account, client, GET_POTENTIAL_INVOICES, getInvoice]);
 
   useEffect(() => {
-    async function fetchAccount() {
-      // Check if Web3 is available and if Metamask is installed
-      if (window.ethereum) {
-        try {
-          // Request account access if needed
-          await window.ethereum.enable();
-          // Get the user's Metamask account address
-          const accounts = await window.ethereum.request({
-            method: "eth_accounts",
-          });
-          // Save the account to the state
-          setAccount(accounts[0]);
-          console.log("ACCOUNTSS", accounts[0]);
-          await getGraph();
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    }
-    fetchAccount();
+    getGraph();
   }, [getGraph]);
 
   const filterData = (status) => {
-    console.log("DATA FILTERING", graphData);
     if (status === "all") {
       setData(graphData);
       setColumns(allColumns);
     } else if (status === "unpaid") {
-      setData(graphData.filter((item) => item.paid === false));
+      setData(graphData.filter((item) => item.status === "Unpaid"));
 
       setColumns(unpaidColumns);
     } else if (status === "paid") {
-      setData(graphData.filter((item) => item.paid === true));
+      setData(graphData.filter((item) => item.status === "Paid"));
 
       setColumns(paidColumns);
     } else if (status === "outstanding") {

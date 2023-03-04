@@ -131,18 +131,6 @@
         "internalType": "uint256",
         "name": "dueDate",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "invoicer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "payer",
-        "type": "address"
       }
     ],
     "name": "Decline",
@@ -177,9 +165,9 @@
       },
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "paid",
-        "type": "bool"
+        "internalType": "uint256",
+        "name": "date",
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -215,32 +203,8 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "dueDate",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
         "name": "date",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "payer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "invoicer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "paidLate",
-        "type": "bool"
       }
     ],
     "name": "InvoicePaid",
@@ -334,18 +298,6 @@
         "internalType": "uint256",
         "name": "dueDate",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "invoicer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "payer",
-        "type": "address"
       }
     ],
     "name": "NewRequest",
@@ -368,6 +320,55 @@
       }
     ],
     "name": "PayerSigned",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "idInvoice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "dueDate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "date",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "invoicer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "payer",
+        "type": "address"
+      }
+    ],
+    "name": "PotentialInvoice",
     "type": "event"
   },
   {
@@ -633,6 +634,19 @@
       }
     ],
     "name": "declineRenegotiation",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      }
+    ],
+    "name": "deleteMark",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1105,26 +1119,6 @@
         "internalType": "uint256",
         "name": "dueDate",
         "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "paid",
-        "type": "bool"
-      },
-      {
-        "internalType": "bool",
-        "name": "tokenIssued",
-        "type": "bool"
-      },
-      {
-        "internalType": "address",
-        "name": "invoicer",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "payer",
-        "type": "address"
       },
       {
         "internalType": "bytes",
