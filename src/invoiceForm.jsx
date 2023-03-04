@@ -3,11 +3,32 @@ import React, { useState } from "react";
 function InvoiceForm() {
   const [optionsVisible, setOptionsVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("ETH");
-  const [name, setName] = useState("");
   const [dueDate, setDueDate] = useState(new Date().toISOString().slice(0, 10));
   const [payerWalletAddress, setPayerWalletAddress] = useState("");
   const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState();
+  const [lateFee, setLateFee] = useState();
+  const [validatorWalletAddress, setValidatorWalletAddress] = useState();
+  const [user, setUser] = useState("");
 
+ React.useEffect(() => {
+   async function fetchAccount() {
+     if (window.ethereum) {
+       try {
+         await window.ethereum.enable();
+         const accounts = await window.ethereum.request({
+           method: "eth_accounts",
+         });
+         setUser(accounts[0]);
+         console.log("ACCOUNTSS", accounts[0]);
+       } catch (error) {
+         console.log(error);
+       }
+     }
+   }
+   fetchAccount();
+ }, [user]);
+ 
   const toggleOptions = () => {
     setOptionsVisible(!optionsVisible);
   };
@@ -17,19 +38,28 @@ function InvoiceForm() {
     setOptionsVisible(false);
     console.log(`Selected option: ${option}`);
   };
-
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-    console.log("Name:", event.target.value);
+  const handleAmountChange = (event) => {
+    setAmount(event.target.value);
+    console.log("Amount:", event.target.value);
   };
 
-  const handleDueDateChange = (event) => {
-    setDueDate(event.target.value);
-    console.log("DueDate", event.target.value);
+  const handleLateFeeChange = (event) => {
+    setLateFee(event.target.value);
+    console.log("Late Fee:", event.target.value);
   };
+
+const handleDueDateChange = (timestamp) => {
+  console.log("handleDueDateChange", timestamp);
+  setDueDate(timestamp);
+};
 
   const handlePayerWalletAddressChange = (event) => {
     setPayerWalletAddress(event.target.value);
+    console.log("WalletAddress:", event.target.value);
+  };
+
+  const handleValidatorWalletAddressChange = (event) => {
+    setValidatorWalletAddress(event.target.value);
     console.log("WalletAddress:", event.target.value);
   };
 
@@ -37,6 +67,31 @@ function InvoiceForm() {
     setDescription(event.target.value);
     console.log("Description:", event.target.value);
   };
+
+  async function handleCreation(){
+    const Web3 = require("web3");
+
+    // Instantiate a Web3 instance using window.ethereum as the provider
+    const abi = require("./abis/abi.json");
+
+    // Create a new instance of the web3 library using an Ethereum node URL
+    const web3 = new Web3(
+      window.ethereum
+    );
+
+    // Create a new instance of the contract object
+    const contractAddress = "0x1910c25D640a007e6326b32C88cAF4052dD02e04";
+    const contract = new web3.eth.Contract(abi, contractAddress);
+    await contract.methods
+      .createInvoice(
+        amount,
+        dueDate,
+        payerWalletAddress,
+        validatorWalletAddress,
+        lateFee
+      )
+      .send({ from: user });}
+  
 
   return (
     <div
@@ -58,16 +113,18 @@ function InvoiceForm() {
           <div className="col-lg-6 mb-3 mb-lg-0">
             <div className="form-group my-3">
               <label htmlFor="input1" className="text-dark">
-                Name
+                Amount
               </label>
               <input
-                value={name}
-                onChange={handleNameChange}
-                type="text"
+                value={amount}
+                onChange={handleAmountChange}
+                type="number"
+                min="1"
+                step="any"
                 className="form-control"
                 id="input1"
                 style={{ border: "2px solid #555" }}
-                placeholder="Name"
+                placeholder="Enter Amount"
               />
             </div>
           </div>
@@ -84,13 +141,19 @@ function InvoiceForm() {
                 Due Date
               </label>
               <input
-                style={{ border: "2px solid black", roundedBorder: "5px" }}
-                type="date"
+                style={{ border: "2px solid black", borderRadius: "5px" }}
+                type="datetime-local"
                 id="input3"
                 name="trip-start"
-                value={dueDate} // replace hard-coded value with dueDate state value
-                min={new Date().toISOString().split("T")[0]} // set min value to current date
-                onChange={handleDueDateChange} // handle change in input element
+                value={
+                  dueDate ? new Date(dueDate).toISOString().slice(0, 16) : ""
+                }
+                min={new Date().toISOString().slice(0, 16)}
+                onChange={(e) => {
+                  const date = new Date(e.target.value);
+                  const timestamp = date.getTime();
+                  handleDueDateChange(timestamp);
+                }}
               ></input>
             </div>
           </div>
@@ -161,6 +224,42 @@ function InvoiceForm() {
               />
             </div>
           </div>
+          <div className="row mb-3">
+            <div className="col-lg-6 mb-3 mb-lg-0">
+              <div className="form-group my-3">
+                <label htmlFor="input6" className="text-dark">
+                  Late Fee
+                </label>
+                <input
+                  value={lateFee}
+                  onChange={handleLateFeeChange}
+                  type="number"
+                  min="1"
+                  step="any"
+                  className="form-control"
+                  id="input6"
+                  style={{ border: "2px solid #555" }}
+                  placeholder=""
+                />
+              </div>
+            </div>
+            <div className="col-lg-6 mb-3 mb-lg-0">
+              <div className="form-group my-3">
+                <label htmlFor="input7" className="text-dark">
+                  Validator Wallet Address
+                </label>
+                <input
+                  value={validatorWalletAddress}
+                  onChange={handleValidatorWalletAddressChange}
+                  type="text"
+                  className="form-control"
+                  id="input1"
+                  style={{ border: "2px solid #555" }}
+                  placeholder="optional"
+                />
+              </div>
+            </div>
+          </div>
           <div></div>
         </div>
         <div></div>
@@ -191,6 +290,9 @@ function InvoiceForm() {
             <button
               className="btn btn-lg "
               style={{ backgroundColor: "#12E26C" }}
+              onClick={() => {
+                handleCreation();
+              }}
             >
               Submit
             </button>
