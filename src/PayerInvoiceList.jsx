@@ -8,109 +8,32 @@ import {
   unpaidColumns,
 } from "./helpers/columns";
 const { ApolloClient, InMemoryCache, gql } = require("@apollo/client");
-
-// const conditionalRowStyles = [
-//   {
-//     when: row => row.status === "unpaid",
-//     style: row => ({
-//       backgroundColor: "yellow",
-//     }),
-//   },
-//   {
-//     when: row => row.status === "paid",
-//     style: row => ({
-//       backgroundColor: "rgba(0, 255, 0, 0.5)",
-//     }),
-//   },
-//   {
-//     when: row => row.status === "outstanding",
-//     style: row => ({
-//       backgroundColor: "rgba(255, 0, 0, 0.5)",
-//     }),
-//   },
-// ];
-
-const customTheme = {
-  rows: {
-    fontWeight: "bold",
-  },
-};
-
-const allData = [
-  {
-    id: 1,
-    Name: "Maya",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "unpaid",
-  },
-  {
-    id: 2,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "paid",
-  },
-  {
-    id: 3,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "unpaid",
-  },
-  {
-    id: 4,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "outstanding",
-  },
-  {
-    id: 5,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "paid",
-  },
-  {
-    id: 6,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "outstanding",
-  },
-  {
-    id: 7,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "unpaid",
-  },
-];
-
 function PayerInvoiceList() {
-  const [data, setData] = useState(allData);
+  const [data, setData] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
   // const [showCheckboxes, setShowCheckboxes] = useState(false);
-  const [columns, setColumns] = useState(allColumns);
   const [account, setAccount] = useState("");
   const [graphData, setGraphData] = useState("");
+  // const { loading, error, data } = useQuery(INVOICE_CREATEDS_QUERY);
 
-const GET_POTENTIAL_INVOICES = gql`
-  query GetPotentialInvoices($payer: String!) {
-    potentialInvoices(where: { payer: $payer }) {
-      id
-      idInvoice
-      invoicer
-      payer
-      dueDate
-      fee
-      amount
-      blockNumber
-      blockTimestamp
+  // const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [payercolumns, setColumns] = useState(allColumns);
+  const [isHovering, setIsHovering] = useState(false);
+  const GET_POTENTIAL_INVOICES = gql`
+    query GetPotentialInvoices($payer: String!) {
+      potentialInvoices(where: { payer: $payer }) {
+        id
+        idInvoice
+        invoicer
+        payer
+        dueDate
+        fee
+        amount
+        blockNumber
+        blockTimestamp
+      }
     }
-  }
-`;
+  `;
 
   const APIURL =
     "https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph";
@@ -124,21 +47,21 @@ const GET_POTENTIAL_INVOICES = gql`
     []
   );
 
- const getGraph = useCallback(async () => {
-   if (!account) {
-     return;
-   }
+  const getGraph = useCallback(async () => {
+    if (!account) {
+      return;
+    }
 
-   try {
-     const { data } = await client.query({
-       query: GET_POTENTIAL_INVOICES,
-       variables: { payer: account },
-     });
-     setGraphData(data.potentialInvoices);
-   } catch (error) {
-     console.error("Error fetching data:", error);
-   }
- }, [account, client, GET_POTENTIAL_INVOICES]);
+    try {
+      const { data } = await client.query({
+        query: GET_POTENTIAL_INVOICES,
+        variables: { payer: account },
+      });
+      setGraphData(data.potentialInvoices);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [account, client, GET_POTENTIAL_INVOICES]);
 
   useEffect(() => {
     async function fetchAccount() {
@@ -168,18 +91,18 @@ const GET_POTENTIAL_INVOICES = gql`
 
   const filterData = (status) => {
     if (status === "all") {
-      setData(allData);
+      setData(graphData);
       setColumns(allColumns);
     } else if (status === "unpaid") {
-      setData(allData.filter((item) => item.status === status));
+      setData(graphData.filter((item) => item.paid === false));
 
       setColumns(unpaidColumns);
     } else if (status === "paid") {
-      setData(allData.filter((item) => item.status === status));
+      setData(graphData.filter((item) => item.paid === true));
 
       setColumns(paidColumns);
     } else if (status === "outstanding") {
-      setData(allData.filter((item) => item.status === status));
+      setData(graphData.filter((item) => item.dueDate > Date.now()));
 
       setColumns(outstandingColumns);
     }
@@ -190,9 +113,7 @@ const GET_POTENTIAL_INVOICES = gql`
   return (
     <div>
       {" "}
-      <h1 style={{ textAlign: "center", color: "black" }}>
-        My Invoices(Payer)
-      </h1>
+      <h1 style={{ textAlign: "center", color: "black" }}>Payer Invoice</h1>
       <div
         style={{
           margin: "10vh 5% 5% 5%",
@@ -210,15 +131,15 @@ const GET_POTENTIAL_INVOICES = gql`
         >
           <button
             onClick={() => filterData("paid")}
-            className={`btn btn-success me-2 ${
-              selectedStatus === "paid" ? "active" : ""
-            }`}
+            style={{ backgroundColor: "#4E4FE9", color: "white" }}
+            className={`btn  me-2 ${selectedStatus === "paid" ? "active" : ""}`}
           >
             Paid
           </button>
           <button
             onClick={() => filterData("unpaid")}
-            className={`btn btn-success me-2 ${
+            style={{ backgroundColor: "#4E4FE9", color: "white" }}
+            className={`btn  me-2 ${
               selectedStatus === "unpaid" ? "active" : ""
             }`}
           >
@@ -226,7 +147,8 @@ const GET_POTENTIAL_INVOICES = gql`
           </button>
           <button
             onClick={() => filterData("outstanding")}
-            className={`btn btn-success me-2 ${
+            style={{ backgroundColor: "#4E4FE9", color: "white" }}
+            className={`btn me-2 ${
               selectedStatus === "outstanding" ? "active" : ""
             }`}
           >
@@ -234,6 +156,10 @@ const GET_POTENTIAL_INVOICES = gql`
           </button>
           <button
             onClick={() => filterData("all")}
+            style={{
+              backgroundColor: "#4E4FE9",
+              color: "white",
+            }}
             className={`btn btn-success ${
               selectedStatus === "all" ? "active" : ""
             }`}
@@ -241,32 +167,9 @@ const GET_POTENTIAL_INVOICES = gql`
             All
           </button>
         </div>
-        <div style={{ border: "3px solid #12E26C", borderRadius: "20px" }}>
-          <DataTable columns={columns} customTheme={customTheme} data={graphData} />
+        <div style={{ border: "3px solid #000080", borderRadius: "20px" }}>
+          <DataTable columns={payercolumns} data={data} />
         </div>
-
-        <Link to="/invoiceForm" style={{ textDecoration: "none" }}>
-          <button
-            type="button"
-            className="btn btn-success"
-            style={{
-              position: "absolute",
-              top: "25px",
-              right: "20px",
-              color: "white",
-              fontSize: "15px",
-              display: "flex",
-              borderRadius: "10px",
-              justifyContent: "center",
-              alignItems: "center",
-              boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
-              outline: "none",
-              cursor: "pointer",
-            }}
-          >
-            + Create an Invoice
-          </button>
-        </Link>
       </div>
     </div>
   );

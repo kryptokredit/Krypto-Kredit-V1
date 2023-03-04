@@ -85,16 +85,18 @@ const allData = [
 
 function InvoiceList() {
 
-  const [data, setData] = useState(allData);
+  
   const [selectedStatus, setSelectedStatus] = useState("all");
   // const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [columns, setColumns] = useState(allColumns);
   const [account, setAccount] = useState("");
   const [ graphData, setGraphData ] = useState("");
+    const [isHovering, setIsHovering] = useState(false);
+    const [data, setData] = useState(graphData);
 
 const GET_INVOICE_CREATEDS_QUERY = gql`
-  query GetInvoiceCreateds($invoicer: String!) {
-    invoiceCreateds(where: { invoicer: $invoicer }) {
+  query GetPotentialInvoices($invoicer: String!) {
+    potentialInvoices(where: { invoicer: $invoicer }) {
       id
       idInvoice
       invoicer
@@ -124,7 +126,7 @@ const getGraph = useCallback(async () => {
         }
       });
       console.log("DATA", data);
-      setGraphData(data.invoiceCreateds);
+      setGraphData(data.potentialInvoices);
     } catch (error) {
       console.log("Error fetching data: ", error);
     }
@@ -162,18 +164,18 @@ const getGraph = useCallback(async () => {
 
   const filterData = (status) => {
     if (status === "all") {
-      setData(allData);
+      setData(graphData);
       setColumns(allColumns);
     } else if (status === "unpaid") {
-      setData(allData.filter((item) => item.status === status));
+      setData(graphData.filter((item) => item.status === status));
 
       setColumns(unpaidColumns);
     } else if (status === "paid") {
-      setData(allData.filter((item) => item.status === status));
+      setData(graphData.filter((item) => item.status === status));
 
       setColumns(paidColumns);
     } else if (status === "outstanding") {
-      setData(allData.filter((item) => item.status === status));
+      setData(graphData.filter((item) => item.status === status));
 
       setColumns(outstandingColumns);
     }
@@ -183,7 +185,7 @@ const getGraph = useCallback(async () => {
 
   return (
     <div>
-  
+      {" "}
       <h1 style={{ textAlign: "center", color: "black" }}>My Invoices</h1>
       <div
         style={{
@@ -227,7 +229,10 @@ const getGraph = useCallback(async () => {
           </button>
           <button
             onClick={() => filterData("all")}
-            style={{ backgroundColor: "#4E4FE9", color: "white" }}
+            style={{
+              backgroundColor: "#4E4FE9",
+              color: "white",
+            }}
             className={`btn btn-success ${
               selectedStatus === "all" ? "active" : ""
             }`}
@@ -236,7 +241,7 @@ const getGraph = useCallback(async () => {
           </button>
         </div>
         <div style={{ border: "3px solid #000080", borderRadius: "20px" }}>
-          <DataTable columns={columns} data={graphData} />
+          <DataTable columns={columns} data={data} />
         </div>
 
         <Link to="/invoiceForm" style={{ textDecoration: "none" }}>
@@ -257,7 +262,10 @@ const getGraph = useCallback(async () => {
               boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
               outline: "none",
               cursor: "pointer",
+              opacity: isHovering ? 0.8 : 1,
             }}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
           >
             + Create an Invoice
           </button>

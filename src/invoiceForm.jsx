@@ -80,7 +80,7 @@ const handleDueDateChange = (timestamp) => {
     );
 
     // Create a new instance of the contract object
-    const contractAddress = "0x1910c25D640a007e6326b32C88cAF4052dD02e04";
+    const contractAddress = "0xB98f4c2a758eB57963c38a5e276d1Ad361bC16aa";
     const contract = new web3.eth.Contract(abi, contractAddress);
     await contract.methods
       .createInvoice(

@@ -1,4 +1,10 @@
+import { signInvoicePayer } from "../components/factoryWeb3";
+
 export const allColumns = [
+  {
+    name: <span style={{ fontWeight: "bold" }}>ID</span>,
+    selector: (row) => row.idInvoice,
+  },
   {
     name: <span style={{ fontWeight: "bold" }}>Name</span>,
     selector: "invoicer",
@@ -9,7 +15,7 @@ export const allColumns = [
   },
   {
     name: <span style={{ fontWeight: "bold" }}>Due Date</span>,
-    selector: "dueDate",
+    selector: (row) => row.dueDate,
   },
   {
     name: <span style={{ fontWeight: "bold" }}>Status</span>,
@@ -40,7 +46,7 @@ export const allColumns = [
     cell: (row) => (
       <button
         className="btn btn-primary"
-        onClick={() => console.log(`Sell ${row.id}`)}
+        onClick={() => signInvoicePayer(row.idInvoice)}
         style={{ width: "120px", height: "auto" }}
       >
         View invoice
@@ -50,6 +56,10 @@ export const allColumns = [
 ];
 
 export const unpaidColumns = [
+  {
+    name: <span style={{ fontWeight: "bold" }}>ID</span>,
+    selector: (row) => row.id,
+  },
   { name: <span style={{ fontWeight: "bold" }}>Name</span>, selector: "Name" },
   {
     name: <span style={{ fontWeight: "bold" }}>Amount</span>,
@@ -57,7 +67,7 @@ export const unpaidColumns = [
   },
   {
     name: <span style={{ fontWeight: "bold" }}>Due Date</span>,
-    selector: "dueDate",
+    selector: (row) => row.dueDate,
   },
 
   {
@@ -86,6 +96,10 @@ export const unpaidColumns = [
 ];
 
 export const paidColumns = [
+  {
+    name: <span style={{ fontWeight: "bold" }}>ID</span>,
+    selector: (row) => row.id,
+  },
   { name: <span style={{ fontWeight: "bold" }}>Name</span>, selector: "Name" },
   {
     name: <span style={{ fontWeight: "bold" }}>Amount</span>,

@@ -1,0 +1,164 @@
+import React from "react";
+
+async function MyColumns(id) {
+  const [account, setAccount] = React.useState("");
+  React.useEffect(() => {
+    async function fetchAccount() {
+      // Check if Web3 is available and if Metamask is installed
+      if (window.ethereum) {
+        try {
+          // Request account access if needed
+          await window.ethereum.enable();
+
+          // Get the user's Metamask account address
+          const accounts = await window.ethereum.request({
+            method: "eth_accounts",
+          });
+
+          // Save the account to the state
+          setAccount(accounts[0]);
+          console.log("ACCOUNTSS", accounts[0]);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+
+    fetchAccount();
+  }, []);
+
+  handleCreation(id, account);
+}
+
+async function handleCreation(id, account) {
+  const Web3 = require("web3");
+
+  // Instantiate a Web3 instance using window.ethereum as the provider
+  const abi = require("../abis/abi.json");
+
+  // Create a new instance of the web3 library using an Ethereum node URL
+  const web3 = new Web3(window.ethereum);
+
+  // Create a new instance of the contract object
+  const contractAddress = "0x1910c25D640a007e6326b32C88cAF4052dD02e04";
+  const contract = new web3.eth.Contract(abi, contractAddress);
+  const invoiceData = await contract.methods.getInvoice(id);
+  const message = await contract.methods.getMessageHash(
+    invoiceData.invoicer,
+    invoiceData.amount,
+    invoiceData.dueDate,
+    invoiceData.payer,
+    id
+  );
+  await contract.methods.signPayerInvoice(id, message).send({ from: account });
+}
+
+const allColumns = [
+  {
+    name: "Name",
+    selector: "invoicer",
+  },
+  {
+    name: "amount",
+    selector: "amount",
+  },
+  {
+    name: "Due Date",
+    selector: "dueDate",
+  },
+  {
+    name: "Status",
+    selector: "status",
+    cell: (row) => {
+      const btn = document.createElement("button");
+      btn.setAttribute("class", "btn");
+      btn.setAttribute("disabled", "");
+      btn.setAttribute("style", `width: 120px; height: auto; align-items: center; background-color: ${
+        row.status === "unpaid"
+          ? "yellow"
+          : row.status === "outstanding"
+          ? "red"
+          : "green"
+      };`);
+      btn.innerHTML = row.status;
+      return btn;
+    },
+  },
+  {
+    name: "View invoice",
+    selector: "view",
+    cell: (row) => {
+      const btn = document.createElement("button");
+      btn.setAttribute("class", "btn btn-primary");
+      btn.setAttribute("style", "width: 120px; height: auto;");
+      btn.innerHTML = "View invoice";
+      btn.addEventListener("click", () => {
+        console.log("ROOOOWW", row);
+        MyColumns(row.idInvoice);
+      });
+      return btn;
+    },
+  },
+];
+
+const unpaidColumns = [
+  { name: "ID", selector: "id" },
+  {
+    name: "Amount",
+    selector: "amount",
+  },
+  {
+    name: "Due Date",
+    selector: "dueDate",
+  },
+
+  {
+    name: "Sell",
+    selector: "Sell",
+    cell: (row) => {
+      const btn = document.createElement("button");
+      btn.setAttribute("class", "btn btn-success btn-sm");
+      btn.setAttribute("style", "width: 120px; height: auto;");
+btn.innerHTML = "Sell";
+btn.addEventListener("click", () => {});
+return btn;
+},
+},
+{
+name: "Borrow",
+cell: (row) => {
+const btn = document.createElement("button");
+btn.setAttribute("class", "btn btn-primary btn-sm");
+btn.setAttribute("style", "width: 120px; height: auto;");
+btn.innerHTML = "Borrow";
+btn.addEventListener("click", () => {});
+return btn;
+},
+},
+];
+
+const paidColumns = [
+{ name: "Name", selector: "Name" },
+{
+name: "Amount",
+selector: "amount",
+},
+{
+name: "Due Date",
+selector: "dueDate",
+},
+];
+
+const outstandingColumns = [
+{ name: "Name", selector: "Name" },
+{
+name: "Amount",
+selector: "amount",
+},
+{
+name: "Due Date",
+selector: "dueDate",
+},
+];
+
+export { allColumns, unpaidColumns, paidColumns, outstandingColumns, MyColumns };
