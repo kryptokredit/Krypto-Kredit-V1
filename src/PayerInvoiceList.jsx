@@ -80,10 +80,6 @@ function PayerInvoiceList() {
         query: GET_POTENTIAL_INVOICES,
         variables: { payer: account },
       });
-           console.log("Video");
-      const list = await getYourPayments(account);
-      console.log("LISTTT",list)
-
       const newArray = data.potentialInvoices.map((row) => {
         console.log("ROOOOW",row)
         const invoice = getInvoice(row.idInvoice);

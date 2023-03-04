@@ -1,53 +1,107 @@
 import React, { useState } from "react";
-
+import { useSpectral } from "@spectral-finance/spectral-modal";
 function MyDashboard() {
   const [activeLink, setActiveLink] = useState("Active");
-
+    const [stringAccount, setStringAccount] = useState(null);
+  const { start, score } = useSpectral();
   const handleLinkClick = (linkName) => {
     setActiveLink(linkName);
   };
+  React.useEffect(() => {
+    async function fetchAccount() {
+      // Check if Web3 is available and if Metamask is installed
+      if (typeof window.ethereum !== "undefined") {
+        if (window.ethereum) {
+          try {
+            await window.ethereum.enable();
 
+            const accounts = await window.ethereum.request({
+              method: "eth_accounts",
+            });
+
+            console.log("ACCOUNTSS", accounts[0]);
+            setStringAccount(
+              accounts[0]
+                ? accounts[0].slice(0, 5) + "..." + accounts[0].slice(39, 42)
+                : "Connect"
+            );
+            return accounts[0];
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    }
+
+    fetchAccount();
+  }, []);
   return (
     <>
-      <div className="card mb-3">
+      <div className="card mb-3 p-4">
         <img
-          src="\header.png"
+          src="\header.jpg"
           className="card-img-fluid"
           alt=""
-          style={{ height: "170px", marginBottom: "-100px" }}
+          style={{ width: "auto", marginBottom: "-150px" }}
         />
         <div className="card-body">
           <div>
             <img
-              src="\profile-pic.png"
+              src="\profile_pic.jpg"
               className="img-thumbnail rounded-circle"
               alt=""
               style={{ height: "220px" }}
             />
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div
+            className=""
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding:"10px"
+            }}
+          >
             <p
               className="card-text"
               style={{
                 fontWeight: "bold",
                 fontSize: "30px",
-                marginLeft: "30px",
+
                 marginTop: "20px",
+                width: "auto",
+
+                alignItems: "center",
               }}
             >
-              0x25DA9E1...
+              {stringAccount}{" "}
+              <p
+                className="card-text"
+                style={{
+                  fontWeight: "bold",
+                  width: "auto",
+                  fontSize: "20px",
+                  marginRight: "20px",
+                  display: "flex",
+                  color:"blue",
+                  alignItems: "center",
+                  marginRigth: "20px",
+                }}
+              >
+                Score: {score}
+              </p>
             </p>
-            <p
-              className="card-text"
+
+            <button
               style={{
-                fontWeight: "bold",
-                fontSize: "30px",
-                marginRight: "70px",
-                marginTop: "35px",
+                height: "40px",
+                width: "150px",
+                marginLeft: "50px",
               }}
+              onClick={start}
             >
-              Score: 585
-            </p>
+              Spectral Score
+            </button>
           </div>
         </div>
         <div className="card text-center">

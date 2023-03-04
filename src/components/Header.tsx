@@ -262,7 +262,7 @@ function Header() {
       }
     }
     getAccounts();
-    login();
+
     fetchAccount();
   }, [getAccounts, login, user]);
 
@@ -290,7 +290,7 @@ function Header() {
                     >
                       Invoicer
                     </Dropdown.Toggle>
-                    <div className="position-absolute">
+                    <div className="">
                       <Dropdown.Menu>
                         <Dropdown.Item href="/InvoiceList">
                           My Invoices
@@ -310,7 +310,7 @@ function Header() {
                   >
                     Payer
                   </Dropdown.Toggle>
-                  <div className="position-absolute">
+                  <div className="">
                     <Dropdown.Menu>
                       <Dropdown.Item href="/PayerInvoiceList">
                         My Invoices
@@ -334,6 +334,7 @@ function Header() {
                     transition: "all 0.3s ease-in-out",
                     marginRight: "15px",
                     width: "110px",
+                    height: "40px",
                   }}
                   onClick={() => {
                     if (user) {
