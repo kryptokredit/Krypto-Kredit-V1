@@ -21,7 +21,26 @@ function Header() {
   );
   const [user, setUser] = useState<String | null>(null);
   const [userToken, setUserToken] = useState<String | null>(null);
+async function fetchAccount() {
+  // Check if Web3 is available and if Metamask is installed
+  if (typeof window.ethereum !== "undefined") {
+   if (window.ethereum) {
+     try {
+       await window.ethereum.enable();
 
+       const accounts = await window.ethereum.request({
+         method: "eth_accounts",
+       });
+
+       console.log("ACCOUNTSS", accounts[0]);
+       return accounts[0];
+     } catch (error) {
+       console.log(error);
+     }
+   }
+  }
+
+}
   useEffect(() => {
     const init = async () => {
       try {
@@ -300,9 +319,9 @@ function Header() {
                 }
               }}
             >
-              {userToken? user?
+              {user?
                  user.slice(0, 5) + "..." + user.slice(39, 42)
-                : "Connect":"Connect"}
+                : "Connect"}
             </button>
           </Nav.Item>
         </Nav>

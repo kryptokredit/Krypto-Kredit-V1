@@ -1,12 +1,12 @@
-import React, { useState, useCallback,useEffect, useMemo } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import DataTable from "react-data-table-component";
-import { Link } from "react-router-dom";
+import { getInvoice } from "./components/factoryWeb3";
 import {
   allColumns,
   outstandingColumns,
   paidColumns,
   unpaidColumns,
-} from "./helpers/columns";
+} from "./helpers/payercolumns";
 const { ApolloClient, InMemoryCache, gql } = require("@apollo/client");
 function PayerInvoiceList() {
   const [data, setData] = useState("");
@@ -48,6 +48,7 @@ function PayerInvoiceList() {
   );
 
   const getGraph = useCallback(async () => {
+    let newArray = [];
     if (!account) {
       return;
     }
@@ -57,7 +58,29 @@ function PayerInvoiceList() {
         query: GET_POTENTIAL_INVOICES,
         variables: { payer: account },
       });
-      setGraphData(data.potentialInvoices);
+      let i = 0;
+      const length = data.potentialInvoices.length;
+      for (i; i < length; i++) {
+        const paidInvoice = getInvoice(i).paid;
+        const outstanding = data.data.potentialInvoices[i].dueDate > Date.now();
+        let newData = [];
+        const row = data.potentialInvoices[i];
+        newData =[ {
+          amount: row.amount,
+          blockNumber: row.blockNumber,
+          blockTimestamp: row.blockTimestamp,
+          dueDate: row.dueDate,
+          fee: row.fee,
+          id: row.id,
+          idInvoice: row.idInvoice,
+          invoicer: row.invoicer,
+          payer: row.payer,
+          status: paidInvoice ? "paid" : outstanding ? "outstanding" : "unpaid",
+        }];
+        console.log("New DATA",newData);
+        newArray.push(newData)
+      }
+      setGraphData(newArray);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -70,12 +93,10 @@ function PayerInvoiceList() {
         try {
           // Request account access if needed
           await window.ethereum.enable();
-
           // Get the user's Metamask account address
           const accounts = await window.ethereum.request({
             method: "eth_accounts",
           });
-
           // Save the account to the state
           setAccount(accounts[0]);
           console.log("ACCOUNTSS", accounts[0]);
@@ -85,11 +106,11 @@ function PayerInvoiceList() {
         }
       }
     }
-
     fetchAccount();
   }, [getGraph]);
 
   const filterData = (status) => {
+    console.log("DATA FILTERING", graphData);
     if (status === "all") {
       setData(graphData);
       setColumns(allColumns);

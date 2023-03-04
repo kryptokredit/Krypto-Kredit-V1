@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { SPECTRAL, ETHERSCAN_KEY } from "../constants";
 
 const useSpectralCreditScore = wallet_address => {
   const [creditScoreData, setCreditScoreData] = useState(null);
@@ -9,7 +8,7 @@ const useSpectralCreditScore = wallet_address => {
   const [isRetryAttempted, setIsRetryAttempted] = useState(false);
 
   const headers = {
-    Authorization: `Bearer ${SPECTRAL}`,
+    Authorization: `Bearer ${process.env.REACT_APP_SPECTRAL}`,
   };
 
   const fetchData = async () => {
@@ -19,7 +18,13 @@ const useSpectralCreditScore = wallet_address => {
       console.log("attempt to pull existing credit score...");
       const response = await axios.get(`https://api.spectral.finance/api/v1/addresses/${wallet_address}`, { headers });
       setCreditScoreData(response.data);
-    } catch (error) {
+      if (response.data) {
+        setCreditScoreData(response.data);
+      } else {
+        setError(new Error("No data returned from Spectral API"));
+      }
+    } 
+    catch (error) {
       if (error.response && error.response.status === 404 && !isRetryAttempted) {
         try {
           console.log("attempting to generate a new credit score");
@@ -31,7 +36,7 @@ const useSpectralCreditScore = wallet_address => {
           setIsRetryAttempted(true);
           // setTimeout(() => {
           //   fetchData();
-          // }, 5000); // 10-second delay
+          // }, 5000); 
           setCreditScoreData(response.data);
         } catch (error) {
           setError(error);

@@ -167,15 +167,16 @@ const getGraph = useCallback(async () => {
       setData(graphData);
       setColumns(allColumns);
     } else if (status === "unpaid") {
-      setData(graphData.filter((item) => item.status === status));
+      console.log("UNPAID FILTAR",graphData)
+      setData(graphData.filter((item) => item.paid === false));
 
       setColumns(unpaidColumns);
     } else if (status === "paid") {
-      setData(graphData.filter((item) => item.status === status));
+      setData(graphData.filter((item) => item.paid === true));
 
       setColumns(paidColumns);
     } else if (status === "outstanding") {
-      setData(graphData.filter((item) => item.status === status));
+      setData(graphData.filter((item) => item.dueDate > Date.now()));
 
       setColumns(outstandingColumns);
     }
@@ -241,7 +242,7 @@ const getGraph = useCallback(async () => {
           </button>
         </div>
         <div style={{ border: "3px solid #000080", borderRadius: "20px" }}>
-          <DataTable columns={columns} data={data} />
+          <DataTable columns={columns} data={graphData} />
         </div>
 
         <Link to="/invoiceForm" style={{ textDecoration: "none" }}>

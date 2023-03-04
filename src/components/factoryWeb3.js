@@ -149,9 +149,9 @@ async function signMessageWithMetaMask(message) {
       console.error("Error signing message:", error); // Handle any errors that occur
     });
 }
-export const mintTheInvoice = async (id, uri) => {
+export const mintTheInvoice = async (id) => {
   const account = await fetchAccount();
-  await contract.methods.mintTheInvoice(id, uri).send({ from: account });
+  await contract.methods.mintTheInvoice(id, "This is an NFT Invoicce").send({ from: account });
 };
 
 export const payInvoice = async (id, amount) => {

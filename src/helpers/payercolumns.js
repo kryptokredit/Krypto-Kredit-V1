@@ -1,17 +1,11 @@
-import { signInvoicePayer, mintTheInvoice } from "../components/factoryWeb3";
-
 export const allColumns = [
   {
     name: <span style={{ fontWeight: "bold" }}>ID</span>,
     selector: (row) => row.idInvoice,
   },
   {
-    name: <span style={{ fontWeight: "bold" }}>Name</span>,
-    selector: "invoicer",
-  },
-  {
-    name: <span style={{ fontWeight: "bold" }}>amount</span>,
-    selector: "amount",
+    name: <span style={{ fontWeight: "bold" }}>Amount</span>,
+    selector: (row) => row.amount,
   },
   {
     name: <span style={{ fontWeight: "bold" }}>Due Date</span>,
@@ -19,7 +13,7 @@ export const allColumns = [
   },
   {
     name: <span style={{ fontWeight: "bold" }}>Status</span>,
-    selector: "status",
+    selector: (row) => row.status,
     cell: (row) => (
       <button
         className="btn"
@@ -41,25 +35,12 @@ export const allColumns = [
     ),
   },
   {
-    name: <span style={{ fontWeight: "bold" }}>Mint</span>,
-    selector: "view",
-    cell: (row) => (
-      <button
-        className="btn  btn-sm"
-        onClick={() => {mintTheInvoice(row.idInvoice)}}
-        style={{ width: "80px", height: "auto", backgroundColor: "#12E26C" }}
-      >
-        Mint
-      </button>
-    ),
-  },
-  {
     name: <span style={{ fontWeight: "bold" }}>View invoice</span>,
     selector: "view",
     cell: (row) => (
       <button
         className="btn btn-primary"
-        onClick={() => signInvoicePayer(row.idInvoice)}
+        onClick={() => console.log(`Sell ${row.id}`)}
         style={{ width: "120px", height: "auto" }}
       >
         View invoice
@@ -71,12 +52,11 @@ export const allColumns = [
 export const unpaidColumns = [
   {
     name: <span style={{ fontWeight: "bold" }}>ID</span>,
-    selector: (row) => row.id,
+    selector: (row) => row.idInvoice,
   },
-  { name: <span style={{ fontWeight: "bold" }}>Name</span>, selector: "Name" },
   {
     name: <span style={{ fontWeight: "bold" }}>Amount</span>,
-    selector: "amount",
+    selector: (row) => row.amount,
   },
   {
     name: <span style={{ fontWeight: "bold" }}>Due Date</span>,
@@ -84,25 +64,25 @@ export const unpaidColumns = [
   },
 
   {
-    name: <span style={{ fontWeight: "bold" }}>Sell</span>,
-    selector: "Sell",
+    name: <span style={{ fontWeight: "bold" }}>Pay</span>,
+    selector: "pay",
     cell: (row) => (
       <button
         className="btn btn-success btn-sm"
-        onClick={() => console.log(`Sell ${row.id}`)}
+        onClick={() => console.log(`Pay ${row.id}`)}
       >
-        Sell
+        Pay
       </button>
     ),
   },
   {
-    name: <span style={{ fontWeight: "bold" }}>Borrow</span>,
+    name: <span style={{ fontWeight: "bold" }}>Renegotiate</span>,
     cell: (row) => (
       <button
         className="btn btn-primary btn-sm"
         onClick={() => console.log(`Borrow ${row.id}`)}
       >
-        Borrow
+        Renegotiate
       </button>
     ),
   },
@@ -111,27 +91,53 @@ export const unpaidColumns = [
 export const paidColumns = [
   {
     name: <span style={{ fontWeight: "bold" }}>ID</span>,
-    selector: (row) => row.id,
+    selector: (row) => row.idInvoice,
   },
-  { name: <span style={{ fontWeight: "bold" }}>Name</span>, selector: "Name" },
   {
     name: <span style={{ fontWeight: "bold" }}>Amount</span>,
-    selector: "amount",
+    selector: (row) => row.amount,
   },
   {
     name: <span style={{ fontWeight: "bold" }}>Due Date</span>,
-    selector: "dueDate",
+    selector: (row) => row.dueDate,
   },
 ];
 
 export const outstandingColumns = [
-  { name: <span style={{ fontWeight: "bold" }}>Name</span>, selector: "Name" },
+  {
+    name: <span style={{ fontWeight: "bold" }}>ID</span>,
+    selector: (row) => row.idInvoice,
+  },
   {
     name: <span style={{ fontWeight: "bold" }}>Amount</span>,
-    selector: "amount",
+    selector: (row) => row.amount,
   },
   {
     name: <span style={{ fontWeight: "bold" }}>Due Date</span>,
-    selector: "dueDate",
+    selector: (row) => row.dueDate,
+  },
+
+  {
+    name: <span style={{ fontWeight: "bold" }}>Pay</span>,
+    cell: (row) => (
+      <button
+        className="btn btn-success btn-sm"
+        onClick={() => console.log(`Pay ${row.id}`)}
+      >
+        Pay
+      </button>
+    ),
+  },
+
+  {
+    name: <span style={{ fontWeight: "bold" }}>Renegotiate</span>,
+    cell: (row) => (
+      <button
+        className="btn btn-primary btn-sm"
+        onClick={() => console.log(`Renegotiate ${row.id}`)}
+      >
+        Renegotiate
+      </button>
+    ),
   },
 ];

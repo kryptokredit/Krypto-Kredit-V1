@@ -1,8 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useSpectralCreditScore } from "../hooks";
 
-const CreditScore = props => {
-  const { address } = props;
+const CreditScore = () => {
+  const [address,setAddress] = useState("")
+  useEffect(()=>{fetchAccount()},[])
+  async function fetchAccount() {
+    // Check if Web3 is available and if Metamask is installed
+    if (typeof window.ethereum !== "undefined") {
+      if (window.ethereum) {
+        try {
+          await window.ethereum.enable();
+
+          const accounts = await window.ethereum.request({
+            method: "eth_accounts",
+          });
+
+          console.log("ACCOUNTSS", accounts[0]);
+          setAddress(accounts[0]);
+          return accounts[0];
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+  }
   const { creditScoreData, isLoading, fetchData } = useSpectralCreditScore(address);
 
   const handleButtonClick = async () => {
@@ -33,13 +54,27 @@ const CreditScore = props => {
       <p>This is a credit score calculated from your on-chain activity</p>
       <label>Address: {address ? address : "Not Connected"}</label>
       {isLoading ? (
-        <p>Loading...</p>
+        <button
+          onClick={() => handleButtonClick()}
+          style={{ color: "black", marginBottom: "10px" }}
+        >
+          Calculate Credit Score
+        </button>
       ) : (
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <button onClick={() => handleButtonClick()} style={{ color: "black", marginBottom: "10px" }}>
+          <button
+            onClick={() => handleButtonClick()}
+            style={{ color: "black", marginBottom: "10px" }}
+          >
             Calculate Credit Score
           </button>
-          <label>Credit Scores: {creditScoreData.score ? creditScoreData.score : "No Score"}</label>
+          <label>
+            Credit Scores:{" "}
+            {creditScoreData && creditScoreData.score
+              ? creditScoreData.score
+              : "No Score"}
+          </label>
+          
         </div>
       )}
     </div>

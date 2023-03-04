@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSpectral, score } from "@spectral-finance/spectral-modal";
+import { Alignment } from "react-data-table-component";
+
 
 function InvoiceForm() {
   const [optionsVisible, setOptionsVisible] = useState(false);
@@ -92,213 +95,251 @@ const handleDueDateChange = (timestamp) => {
       )
       .send({ from: user });}
   
+  const { start, score } = useSpectral();
+  const [myScore, setMyScore] = useState();
+
+  useEffect(() => {
+    if (!score) {
+      console.log("Score not calculated");
+      return;
+    }
+    console.log(`Hooray! your score is ${score}`);
+    setMyScore(score);
+  }, [score]);
 
   return (
-    <div
-      className="container px-lg-5 py-4"
-      style={{
-        border: "2px solid #000080",
-        borderRadius: "7px",
-        maxWidth: "800px",
-        margin: "0 auto",
-        marginTop: "20px",
-        backgroundColor: "#f8f9fa",
-      }}
-    >
-      <h1 style={{ color: "#12E26C" }} className="text-center text-dark mb-4">
-        Create an Invoice
-      </h1>
-      <form>
-        <div className="row mb-3">
-          <div className="col-lg-6 mb-3 mb-lg-0">
-            <div className="form-group my-3">
-              <label htmlFor="input1" className="text-dark">
-                Amount
-              </label>
-              <input
-                value={amount}
-                onChange={handleAmountChange}
-                type="number"
-                min="1"
-                step="any"
-                className="form-control"
-                id="input1"
-                style={{ border: "2px solid #555" }}
-                placeholder="Enter Amount"
-              />
-            </div>
-          </div>
-          <div className="col-lg-6">
-            <div
-              className="form-group my-3"
-              style={{ display: "flex", flexDirection: "column" }}
-            >
-              <label
-                className="text-dark"
-                htmlFor="input3"
-                style={{ marginBottom: "5px" }}
-              >
-                Due Date
-              </label>
-              <input
-                style={{ border: "2px solid black", borderRadius: "5px" }}
-                type="datetime-local"
-                id="input3"
-                name="trip-start"
-                value={
-                  dueDate ? new Date(dueDate).toISOString().slice(0, 16) : ""
-                }
-                min={new Date().toISOString().slice(0, 16)}
-                onChange={(e) => {
-                  const date = new Date(e.target.value);
-                  const timestamp = date.getTime();
-                  handleDueDateChange(timestamp);
-                }}
-              ></input>
-            </div>
-          </div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-lg-6 mb-3 mb-lg-0">
-            <div className="form-group my-3">
-              <label htmlFor="input3" className="text-dark">
-                Select Token
-              </label>
-              <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="input3"
-                  value={selectedOption}
-                  readOnly
-                  onClick={toggleOptions}
-                  style={{ border: "2px solid #555" }}
-                />
-                <div className="position-absolute" style={{ top: 3, right: 5 }}>
-                  <button
-                    type="button"
-                    className="btn btn-light btn-sm"
-                    onClick={toggleOptions}
-                  >
-                    &#x25BC;
-                  </button>
-                </div>
-                {optionsVisible && (
-                  <div className="position-absolute mt-2 bg-dark p-2">
-                    <div
-                      className="text-light"
-                      onClick={() => selectOption("ETH")}
-                    >
-                      ETH
-                    </div>
-                    <div
-                      className="text-light"
-                      onClick={() => selectOption("Arb")}
-                    >
-                      Arb
-                    </div>
-                    <div
-                      className="text-light"
-                      onClick={() => selectOption("Poly")}
-                    >
-                      Poly
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-6">
-            <div className="form-group my-3">
-              <label htmlFor="input4" className="text-dark">
-                Enter Wallet address of payer
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="input4"
-                value={payerWalletAddress}
-                onChange={handlePayerWalletAddressChange}
-                style={{ border: "2px solid #555" }}
-                placeholder="Wallet Address"
-              />
-            </div>
-          </div>
+    <div className="p-4">
+      <div
+        className="container px-lg-5 py-4"
+        style={{
+          border: "2px solid #000080",
+          borderRadius: "7px",
+          maxWidth: "800px",
+          margin: "0 auto",
+          marginTop: "20px",
+          backgroundColor: "#f8f9fa",
+        }}
+      >
+        <h1 style={{ color: "#12E26C" }} className="text-center text-dark mb-4">
+          Create an Invoice
+        </h1>
+        <form>
           <div className="row mb-3">
             <div className="col-lg-6 mb-3 mb-lg-0">
               <div className="form-group my-3">
-                <label htmlFor="input6" className="text-dark">
-                  Late Fee
+                <label htmlFor="input1" className="text-dark">
+                  Amount
                 </label>
                 <input
-                  value={lateFee}
-                  onChange={handleLateFeeChange}
+                  value={amount}
+                  onChange={handleAmountChange}
                   type="number"
                   min="1"
                   step="any"
                   className="form-control"
-                  id="input6"
-                  style={{ border: "2px solid #555" }}
-                  placeholder=""
-                />
-              </div>
-            </div>
-            <div className="col-lg-6 mb-3 mb-lg-0">
-              <div className="form-group my-3">
-                <label htmlFor="input7" className="text-dark">
-                  Validator Wallet Address
-                </label>
-                <input
-                  value={validatorWalletAddress}
-                  onChange={handleValidatorWalletAddressChange}
-                  type="text"
-                  className="form-control"
                   id="input1"
                   style={{ border: "2px solid #555" }}
-                  placeholder="optional"
+                  placeholder="Enter Amount"
                 />
               </div>
             </div>
-          </div>
-          <div></div>
-        </div>
-        <div></div>
-        <div className="row mb-3">
-          <div className="col-lg-12">
-            <div className="form-group my-3 text-left">
-              <label
-                htmlFor="input5"
-                className="text-dark"
-                style={{ color: "black" }}
+            <div className="col-lg-6">
+              <div
+                className="form-group my-3"
+                style={{ display: "flex", flexDirection: "column" }}
               >
-                Description of Service
-              </label>
-              <textarea
-                className="form-control"
-                id="input5"
-                value={description}
-                onChange={handleDescriptionChange}
-                style={{ border: "2px solid #555" }}
-                placeholder="Enter a Description"
-              ></textarea>
+                <label
+                  className="text-dark"
+                  htmlFor="input3"
+                  style={{ marginBottom: "5px" }}
+                >
+                  Due Date
+                </label>
+                <input
+                  style={{ border: "2px solid black", borderRadius: "5px" }}
+                  type="datetime-local"
+                  id="input3"
+                  name="trip-start"
+                  value={
+                    dueDate ? new Date(dueDate).toISOString().slice(0, 16) : ""
+                  }
+                  min={new Date().toISOString().slice(0, 16)}
+                  onChange={(e) => {
+                    const date = new Date(e.target.value);
+                    const timestamp = date.getTime();
+                    handleDueDateChange(timestamp);
+                  }}
+                ></input>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="row">
-          <div className="col-lg-12 text-center">
-            <button
-              className="btn btn-lg "
-              style={{ backgroundColor: "#12E26C" }}
-              onClick={() => {
-                handleCreation();
-              }}
-            >
-              Submit
-            </button>
+          <div className="row mb-3">
+            <div className="col-lg-6 mb-3 mb-lg-0">
+              <div className="form-group my-3">
+                <label htmlFor="input3" className="text-dark">
+                  Select Token
+                </label>
+                <div className="position-relative">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="input3"
+                    value={selectedOption}
+                    readOnly
+                    onClick={toggleOptions}
+                    style={{ border: "2px solid #555" }}
+                  />
+                  <div
+                    className="position-absolute"
+                    style={{ top: 3, right: 5 }}
+                  >
+                    <button
+                      type="button"
+                      className="btn btn-light btn-sm"
+                      onClick={toggleOptions}
+                    >
+                      &#x25BC;
+                    </button>
+                  </div>
+
+                  {optionsVisible && (
+                    <div className="position-absolute mt-2 bg-dark p-2">
+                      <div
+                        className="text-light"
+                        onClick={() => selectOption("ETH")}
+                      >
+                        ETH
+                      </div>
+                      <div
+                        className="text-light"
+                        onClick={() => selectOption("Arb")}
+                      >
+                        Arb
+                      </div>
+                      <div
+                        className="text-light"
+                        onClick={() => selectOption("Poly")}
+                      >
+                        Poly
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="d-flex justify-content-center text-center">
+              <button
+                type="button"
+                className="d-flex justify-content-center w-50"
+                onClick={start}
+              >
+                Calculate Spectral Score
+              </button>
+            </div>
+
+            <div className="col-lg-6">
+              <div className="form-group my-3">
+                <div className="d-flex">
+                  <label style={{}} htmlFor="input4" className="text-dark">
+                    Enter Wallet address of payer/{" "}
+                  </label>
+                  <p
+                    style={{
+                      color: "red",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Score: {score}
+                  </p>
+                </div>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="input4"
+                  value={payerWalletAddress}
+                  onChange={handlePayerWalletAddressChange}
+                  style={{ border: "2px solid #555" }}
+                  placeholder="Wallet Address"
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-lg-6 mb-3 mb-lg-0">
+                <div className="form-group my-3">
+                  <label htmlFor="input6" className="text-dark">
+                    Late Fee
+                  </label>
+                  <input
+                    value={lateFee}
+                    onChange={handleLateFeeChange}
+                    type="number"
+                    min="1"
+                    step="any"
+                    className="form-control"
+                    id="input6"
+                    style={{ border: "2px solid #555" }}
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <div className="col-lg-6 mb-3 mb-lg-0">
+                <div className="form-group my-3">
+                  <label htmlFor="input7" className="text-dark">
+                    Validator Wallet Address
+                  </label>
+                  <input
+                    value={validatorWalletAddress}
+                    onChange={handleValidatorWalletAddressChange}
+                    type="text"
+                    className="form-control"
+                    id="input1"
+                    style={{ border: "2px solid #555" }}
+                    placeholder="optional"
+                  />
+                </div>
+              </div>
+            </div>
+            <div></div>
           </div>
-        </div>
-      </form>
+          <div></div>
+          <div className="row mb-3">
+            <div className="col-lg-12">
+              <div className="form-group my-3 text-left">
+                <label
+                  htmlFor="input5"
+                  className="text-dark"
+                  style={{ color: "black" }}
+                >
+                  Description of Service
+                </label>
+                <textarea
+                  className="form-control"
+                  id="input5"
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  style={{ border: "2px solid #555" }}
+                  placeholder="Enter a Description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-lg-12 text-center">
+              <button
+                className="btn btn-lg "
+                style={{ backgroundColor: "#12E26C" }}
+                onClick={() => {
+                  handleCreation();
+                }}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
