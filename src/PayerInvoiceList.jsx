@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import DataTable from "react-data-table-component";
-import { getInvoice } from "./components/factoryWeb3";
+import { getInvoice, getYourPayments } from "./components/factoryWeb3";
 import {
   allColumns,
   outstandingColumns,
@@ -80,6 +80,9 @@ function PayerInvoiceList() {
         query: GET_POTENTIAL_INVOICES,
         variables: { payer: account },
       });
+           console.log("Video");
+      const list = await getYourPayments(account);
+      console.log("LISTTT",list)
 
       const newArray = data.potentialInvoices.map((row) => {
         console.log("ROOOOW",row)
@@ -106,13 +109,14 @@ function PayerInvoiceList() {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [account, client, GET_POTENTIAL_INVOICES, getInvoice]);
+  }, [account, client, GET_POTENTIAL_INVOICES]);
 
   useEffect(() => {
     getGraph();
   }, [getGraph]);
 
   const filterData = (status) => {
+    getGraph();
     if (status === "all") {
       setData(graphData);
       setColumns(allColumns);

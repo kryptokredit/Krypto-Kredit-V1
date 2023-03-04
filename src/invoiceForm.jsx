@@ -84,19 +84,21 @@ const handleDueDateChange = (timestamp) => {
     );
 
     // Create a new instance of the contract object
-    const contractAddress = "0xB98f4c2a758eB57963c38a5e276d1Ad361bC16aa";
+    const contractAddress = "0x0F97AAB884B8d1A49B0a4941B77fe08D8Ad19696";
     const contract = new web3.eth.Contract(abi, contractAddress);
     console.log(amount,dueDate,payerWalletAddress,validatorWalletAddress,lateFee)
     console.log("FACTORY CONTRACT",contract)
     const id = await contract.methods.invoiceCount().call();
+    const idNumber = parseInt(id)+1;
+    console.log("This is the ID", idNumber);
     await createInvoice(
-        amount,
-        dueDate,
-        payerWalletAddress,
-        validatorWalletAddress,
-        lateFee,
-        id
-      )}
+      amount,
+      dueDate,
+      payerWalletAddress,
+      validatorWalletAddress,
+      lateFee,
+      idNumber
+    );}
   
   const { start, score } = useSpectral();
 

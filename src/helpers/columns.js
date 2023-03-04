@@ -1,4 +1,4 @@
-import { signInvoicePayer, mintTheInvoice } from "../components/factoryWeb3";
+import { mintTheInvoice } from "../components/factoryWeb3";
 
 export const allColumns = [
   {
@@ -47,7 +47,10 @@ export const allColumns = [
       <button
         className="btn  btn-sm"
         onClick={() => {
-          mintTheInvoice(row.idInvoice);
+  
+            mintTheInvoice(row.idInvoice)
+
+          ;
         }}
         style={{ width: "80px", height: "auto", backgroundColor: "#12E26C" }}
       >
@@ -65,7 +68,7 @@ export const allColumns = [
     cell: (row) => (
       <button
         className="btn btn-primary"
-        onClick={() => signInvoicePayer(row.idInvoice)}
+        onClick={() => {}}
         style={{ width: "120px", height: "auto" }}
       >
         {window.innerWidth < 768 ? "View" : "View Invoice"}
