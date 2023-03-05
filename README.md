@@ -25,11 +25,11 @@ We've built 2 snap functions to give our users a better experience in every plat
 
 ## POLYGON
 
-We've got advantage of the the low fee transactions and the stability of the network to perform at our peak. We've integrated our technology so in the future we can ad ID solutions for our users via this rollup solution.
+We've got advantage of the the low fee transactions and the stability of the network to perform at our peak. We've integrated our technology so in the future we can ad ID implementations for our users via this rollup solution.
 
 ## SCROLL
 
-We've deployed fully on Scroll and we've been planning to implement our validitor system with their zKproof technology to upgrade the trust in the system by validation transactions ina  secure way that can benefit the anonimity of the user.
+We've deployed fully on Scroll and we've been planning to implement our validitor system with their zKproof technology to upgrade the trust in the system by validation transactions in a secure way that can benefit the anonimity of the user.
 
 ## THE GRAPH
 
