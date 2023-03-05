@@ -38,19 +38,15 @@ function MyDashboard() {
   return (
     <>
       <div className="card mb-3 p-4">
-        <img
-          src="\header.jpg"
-          className="card-img-fluid"
-          alt=""
-          style={{ width: "auto", marginBottom: "-150px" }}
-        />
+        <img src="\header.jpg" class="card-img-fluid crop-image" alt="" />
+
         <div className="card-body">
           <div>
             <img
               src="\profile_pic.jpg"
               className="img-thumbnail rounded-circle"
               alt=""
-              style={{ height: "220px" }}
+              style={{ height: "220px",marginTop:"-150px" }}
             />
           </div>
           <div
@@ -59,7 +55,7 @@ function MyDashboard() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              padding:"10px"
+              padding: "10px",
             }}
           >
             <p
@@ -74,16 +70,16 @@ function MyDashboard() {
                 alignItems: "center",
               }}
             >
-              {stringAccount}{" "}
+              {stringAccount}
               <p
                 className="card-text"
                 style={{
                   fontWeight: "bold",
                   width: "auto",
                   fontSize: "20px",
-                  marginRight: "20px",
+
                   display: "flex",
-                  color:"blue",
+                  color: "blue",
                   alignItems: "center",
                   marginRigth: "20px",
                 }}
@@ -91,17 +87,80 @@ function MyDashboard() {
                 Score: {score}
               </p>
             </p>
-
-            <button
+            <div
               style={{
-                height: "40px",
-                width: "150px",
-                marginLeft: "50px",
+                width: "auto",
+                display: "flex",
+                flexDirection: "column",
               }}
-              onClick={start}
             >
-              Spectral Score
-            </button>
+              <div>
+                <img
+                  src="Spectral_Finance.png"
+                  alt=""
+                  style={{ width: "60px" }}
+                />
+                <button
+                  style={{
+                    height: "40px",
+                    width: "150px",
+                    marginLeft: "0px",
+                    backgroundColor: "#5f5fff",
+                    borderRadius: "5px",
+                    border: "none",
+                    color: "#ffffff",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+                    transition: "all 0.3s ease-in-out",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.target.style.backgroundColor = "#4c4cff")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.target.style.backgroundColor = "#5f5fff")
+                  }
+                  onClick={start}
+                >
+                  Spectral Score
+                </button>
+              </div>
+
+              <div style={{marginLeft:"15px"}}>
+
+                  <img src="HumaLogo.jpg" alt="" style={{ width: "30px" }} />
+
+                <button
+                  style={{
+                    height: "40px",
+                    width: "150px",
+                    marginTop: "10px",
+                    marginLeft: "15px", // Increased the margin to give some space between the buttons
+                    backgroundColor: "#a061d1", // Changed the background color to a purple shade
+                    borderRadius: "5px",
+                    border: "none",
+                    color: "#ffffff",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+                    transition: "all 0.3s ease-in-out",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.target.style.backgroundColor = "#8a44c7")
+                  } // Changed the hover color to a darker shade of purple
+                  onMouseLeave={(e) =>
+                    (e.target.style.backgroundColor = "#a061d1")
+                  }
+                  onClick={() =>
+                    (window.location.href = "https://huma.finance/")
+                  } // Added the window.location.href function to go to the Huma Finance website
+                >
+                  Explore Huma
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <div className="card text-center">
@@ -134,20 +193,27 @@ function MyDashboard() {
           </div>
 
           <div
-            className="card-deck d-flex justify-content-center gap-3"
+            className="card-deck d-flex justify-content-center gap-3 flex-wrap"
             style={{ marginTop: "20px" }}
           >
             <div
               className="card border-primary mb-3"
               style={{ maxWidth: "18rem" }}
             >
-              <div className="card-header">Status: Renegotiated</div>
+              <div className="card-header">Status: Verified</div>
               <div className="card-body text-primary">
                 <h5 className="card-title">Beamer Auto</h5>
                 <p className="card-text">
                   Engine Oil Change and Brake Pad Replacement
                 </p>
               </div>
+              <a href="https://app.huma.finance/#/borrow">
+                Go to Huma
+                <img
+                  src="/HumaLogo.jpg"
+                  style={{ width: "30px", padding: "5px" }}
+                ></img>
+              </a>
             </div>
 
             <div

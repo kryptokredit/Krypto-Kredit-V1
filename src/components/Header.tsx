@@ -268,13 +268,12 @@ function Header() {
 
   return (
     <div className="b-flex w-auto px-5 bg-light">
-      <div></div>
       <Navbar bg="light" expand="lg">
         <Navbar.Brand href="/">
           <img
             src="/KryptoKreditLogo.png"
             alt="Logo"
-            style={{ width: "200px" }}
+            style={{ width: "250px" }}
           />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

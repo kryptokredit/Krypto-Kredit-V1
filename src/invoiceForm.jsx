@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSpectral } from "@spectral-finance/spectral-modal";
 import { signInvoiceInvoicer, createInvoice } from "./components/factoryWeb3";
-
+import axios from "axios";
 
 function InvoiceForm() {
   const [optionsVisible, setOptionsVisible] = useState(false);
@@ -99,9 +99,59 @@ const handleDueDateChange = (timestamp) => {
       lateFee,
       idNumber
     );}
-  
-  const { start, score } = useSpectral();
+  const [creditScoreData, setCreditScoreData] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRetryAttempted, setIsRetryAttempted] = useState(false);
 
+  const headers = {
+    Authorization: `Bearer ${process.env.REACT_APP_SPECTRAL}`,
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      console.log("attempt to pull existing credit score...");
+      const response = await axios.get(
+        `https://api.spectral.finance/api/v1/addresses/${payerWalletAddress}`,
+        { headers }
+      );
+      console.log("RESPONSEE", response.data[0]);
+      setCreditScoreData(response.data[0]);
+      if (response.data) {
+        setCreditScoreData(response.data);
+      } else {
+        setError(new Error("No data returned from Spectral API"));
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status === 404 &&
+        !isRetryAttempted
+      ) {
+        try {
+          console.log("attempting to generate a new credit score");
+          const response = await axios.post(
+            `https://api.spectral.finance/api/v1/addresses/${payerWalletAddress}`,
+            { headers }
+          );
+          setIsRetryAttempted(true);
+          // setTimeout(() => {
+          //   fetchData();
+          // }, 5000);
+          setCreditScoreData(response.data);
+        } catch (error) {
+          setError(error);
+        }
+      } else {
+        console.log("ERROR");
+        setError(error);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="p-4">
@@ -226,27 +276,27 @@ const handleDueDateChange = (timestamp) => {
             </div>
             <div className="d-flex">
               <img
-              src="https://uploads-ssl.webflow.com/6384dc706c77d5664d1a1d65/6384dc706c77d5d2fc1a1dbd_logo.png"
-              alt="spectral logo"
-              style={{
-                backgroundColor: "black",
-                width: "100%",
-                height: "50px",
-                maxWidth: "200px",
-                display: "block",
-                margin: "0 auto",
-              }}
-            />
-            <div className="d-flex justify-content-center text-center">
-              <button
-                type="button"
-                className="d-flex justify-content-center w-100 h-50px"
-                onClick={start}
-              >
-                Calculate Spectral Score
-              </button>
-            </div>
-            
+                src="https://uploads-ssl.webflow.com/6384dc706c77d5664d1a1d65/6384dc706c77d5d2fc1a1dbd_logo.png"
+                alt="spectral logo"
+                style={{
+                  backgroundColor: "black",
+                  width: "100%",
+                  height: "50px",
+                  maxWidth: "200px",
+                  display: "block",
+                  margin: "0 auto",
+                }}
+              />
+
+              <div className="d-flex justify-content-center text-center">
+                <button
+                  type="button"
+                  className="d-flex justify-content-center w-100 h-50px"
+                  onClick={fetchData}
+                >
+                  Calculate Spectral Score
+                </button>
+              </div>
             </div>
 
             <div className="col-lg-6">
@@ -261,7 +311,7 @@ const handleDueDateChange = (timestamp) => {
                       fontWeight: "bold",
                     }}
                   >
-                    Score: {score}
+                    Score: {isLoading ? "Loading..." : creditScoreData.score}
                   </p>
                 </div>
                 <input

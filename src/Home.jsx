@@ -26,12 +26,18 @@ function Home() {
             style={{ background: "#12E26C" }}
             type="button"
             className="btn btn-lg px-4 me-md-2"
+            onClick={() => {
+              window.location.href = "/InvoiceForm";
+            }}
           >
             Get Started
           </button>
           <button
             type="button"
             className="btn btn-outline-secondary btn-lg px-4"
+            onClick={() => {
+              window.location.href = "https://github.com/kryptokredit";
+            }}
           >
             Learn More
           </button>
@@ -39,10 +45,88 @@ function Home() {
       </div>
       <div className="col-md-6">
         <img
-          style={{ maxWidth: "80%" }}
+          style={{ maxWidth: "80%", padding: "10px" }}
           alt="Hero title"
           src="./undraw_sharing_knowledge_03vp.svg"
         />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "30px",
+        }}
+      >
+        <div
+          style={{
+            background: "linear-gradient(to right, #00bfff, #32cd32)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+          className="display-5 fw-bold lh-1 text-left"
+        >
+          Our Partners
+        </div>
+      </div>
+      <div
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+        className="display-5 fw-bold lh-1 text-left"
+      >
+        <div
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          className="d-flex-inline"
+        >
+          <div
+            className="d-flex px-5"
+            style={{
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
+          >
+            <img src="Zeppelin .png" alt="Zeppelin" style={{ width: "80px" }} />
+            <img src="logo.png" alt="Scroll" style={{ width: "50px" }} />
+            <img
+              src="HumaLogo.jpg"
+              alt="Huma"
+              style={{ width: "50px", height: "50px" }}
+            />
+            <img
+              src="WalletConnect-Logo.jpg"
+              alt="WalletConnect"
+              style={{ width: "80px" }}
+            />
+          </div>
+          <div
+            className="d-flex px-5"
+            style={{
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
+          >
+            <img src="Graph.jpg" alt="TheGraph" style={{ width: "130px" }} />
+
+            <img
+              src="polygon-matic-logo.png"
+              alt="Polygon"
+              style={{ width: "80px" }}
+            />
+            <img
+              src="Spectral_Finance.png"
+              alt="Spectral"
+              style={{ width: "90px" }}
+            />
+            <img src="metamask.png" alt="Metamask" style={{ width: "70px" }} />
+          </div>
+        </div>
       </div>
     </div>
   );
