@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <SpectralProvider
-      logo="/Logo.png"
+      logo="/Logokk.png"
       partnerId={
         process.env.REACT_APP_SPECTRAL_PARTNER
           ? process.env.REACT_APP_SPECTRAL_PARTNER
