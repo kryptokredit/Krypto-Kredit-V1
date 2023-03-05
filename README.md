@@ -9,6 +9,7 @@ Krypto Kredit is a Web3 Dapp that allows users to build credit by taking off cha
 Use this address as validator: `0x0582fB623317d4B711Da3D7658cd6f834b508417`
 
 ## SPECTRAL FINANCE
+
 We've integrated both their API and SDK solution to validate our costumer. You can check for other users scores (via API) and get your own credit score with their SDK. 
 
 ## HUMA FINANCE
@@ -19,10 +20,25 @@ With the integration of Huma evaluation agent (EA) we can monitor the Krypto Kre
 
 We've built 2 snap functions to give our users a better experience in every plataform that uses our invoices. 
 
-`getPendingInvoices` : Will get the number of pending invoices you have. 
-`payLatestInvoice` : Will sign the older invoice you have
+`getPendingInvoices` : Will get the number of pending invoices you have. <br>
+`payLatestInvoice` : Will sign the older invoice you have to your wallet
 
 ## POLYGON
+
+We've got advantage of the the low fee transactions and the stability of the network to perform at our peak. We've integrated our technology so in the future we can ad ID solutions for our users via this rollup solution.
+
+## SCROLL
+
+We've deployed fully on Scroll and we've been planning to implement our validitor system with their zKproof technology to upgrade the trust in the system by validation transactions ina  secure way that can benefit the anonimity of the user.
+
+## THE GRAPH
+
+Our multigraph implementation let's the ecosystem gather all the information the user needs to have a clearer understanding of a users finantial transactions on and off chain. We're trying to implement a new social score that will give our users the capabilities of getting transactional freedom.
+
+Factory Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph`<br>
+Default Certificate Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/bad-kredit`<br>
+Transaction Certification Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/good-token`<br>
+Validator Graph`https://api.thegraph.com/subgraphs/name/luiscmogrovejo/validator-token`<br>
 
 ## DEPLOYMENTS
 
@@ -31,14 +47,10 @@ Project URL = `https://kryptokredit.netlify.app/`
 MUMBAI
 
 Factory Deployed: `0x0F97AAB884B8d1A49B0a4941B77fe08D8Ad19696` <br>
-Factory Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph`<br>
 KryptoKredits Deployed: `0x4388CD730ee501d6A0617A7Ef9D92511e77c5895`<br>
 Bad Deployed: `0x81A8C712Bc9a0E83d797522006806b81DA21273B`<br>
-Default Certificate Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/bad-kredit`<br>
 Goodd Deployed: `0x43F45be24ab2F025be425bfe295C18D3E71cc65f`<br>
-Transaction Certification Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/good-token`<br>
 Validator Deployed: `0x6508912957F7DC9b0c5964C59b6572E6F2AeF3DA`<br>
-Validator Graph`https://api.thegraph.com/subgraphs/name/luiscmogrovejo/validator-token`<br>
 
 SCROLL
 
@@ -54,7 +66,8 @@ Clone this repository using the following command: `git clone https://github.com
 
 Navigate to the project directory and install the required dependencies using yarn:
 
-`cd krypto-kredit-dapp yarn install`
+`cd krypto-kredit-dapp`<br>
+`yarn install`
 
 Start the development server using the following command: `yarn start`
 
