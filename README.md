@@ -35,6 +35,8 @@ We've deployed fully on Scroll and we've been planning to implement our validito
 
 Our multigraph implementation let's the ecosystem gather all the information the user needs to have a clearer understanding of a users finantial transactions on and off chain. We're trying to implement a new social score that will give our users the capabilities of getting transactional freedom.
 
+Current Graph, fetch from polygon network to feed our user analytics.
+
 Factory Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph`<br>
 Default Certificate Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/bad-kredit`<br>
 Transaction Certification Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/good-token`<br>
@@ -42,7 +44,11 @@ Validator Graph`https://api.thegraph.com/subgraphs/name/luiscmogrovejo/validator
 
 ## DEPLOYMENTS
 
+All our contracs have been  fully deployed and verified.
+
 Project URL = `https://kryptokredit.netlify.app/`
+
+Contracts repo: https://github.com/kryptokredit/Smart-Contracts
 
 MUMBAI
 
