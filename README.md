@@ -30,23 +30,23 @@ Project URL = `https://kryptokredit.netlify.app/`
 
 MUMBAI
 
-Factory Deployed: `0x0F97AAB884B8d1A49B0a4941B77fe08D8Ad19696`
-Factory Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph`
-KryptoKredits Deployed: `0x4388CD730ee501d6A0617A7Ef9D92511e77c5895`
-Bad Deployed: `0x81A8C712Bc9a0E83d797522006806b81DA21273B`
-Default Certificate Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/bad-kredit`
-Goodd Deployed: `0x43F45be24ab2F025be425bfe295C18D3E71cc65f`
-Transaction Certification Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/good-token`
-Validator Deployed: `0x6508912957F7DC9b0c5964C59b6572E6F2AeF3DA`
-Validator Graph`https://api.thegraph.com/subgraphs/name/luiscmogrovejo/validator-token`
+Factory Deployed: `0x0F97AAB884B8d1A49B0a4941B77fe08D8Ad19696` <br>
+Factory Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph`<br>
+KryptoKredits Deployed: `0x4388CD730ee501d6A0617A7Ef9D92511e77c5895`<br>
+Bad Deployed: `0x81A8C712Bc9a0E83d797522006806b81DA21273B`<br>
+Default Certificate Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/bad-kredit`<br>
+Goodd Deployed: `0x43F45be24ab2F025be425bfe295C18D3E71cc65f`<br>
+Transaction Certification Graph: `https://api.thegraph.com/subgraphs/name/luiscmogrovejo/good-token`<br>
+Validator Deployed: `0x6508912957F7DC9b0c5964C59b6572E6F2AeF3DA`<br>
+Validator Graph`https://api.thegraph.com/subgraphs/name/luiscmogrovejo/validator-token`<br>
 
 SCROLL
 
-Factory Deployed: `0xdC0Ab650c385b47c0360035dE8145f6a035cAbE5`
-KryptoKredits Deployed: `0xAF81ac4A2C1D1A5470835938875ed2512fD219Bb`
-Bad Deployed: `0xCf4e15754470fa72912F1927b8BCBC0822a3CbBb`
-Goodd Deployed: `0x538e51be5122cB37FDDDd00E34eD8208A6F1BF01`
-Validator Deployed: `0x345B24D5f4A8Bfd81133bad3df8C3c0D9a989Ee8`
+Factory Deployed: `0xdC0Ab650c385b47c0360035dE8145f6a035cAbE5`<br>
+KryptoKredits Deployed: `0xAF81ac4A2C1D1A5470835938875ed2512fD219Bb`<br>
+Bad Deployed: `0xCf4e15754470fa72912F1927b8BCBC0822a3CbBb`<br>
+Goodd Deployed: `0x538e51be5122cB37FDDDd00E34eD8208A6F1BF01`<br>
+Validator Deployed: `0x345B24D5f4A8Bfd81133bad3df8C3c0D9a989Ee8`<br>
 
 To get started with this project, follow these steps:
 
