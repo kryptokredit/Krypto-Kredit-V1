@@ -2,6 +2,8 @@
 
 Teaser: https://lvpr.tv/?v=a3b5m85lnqmjdefv
 
+Pitch Deck: https://docs.google.com/presentation/d/1W_Ufe8uo_mZriEN3jOlWteSjfGKherPPN1x5GoRaW4w/edit#slide=id.g215acbd223f_0_5
+
 Krypto Kredit is a Web3 Dapp that allows users to build credit by taking off chain transaction data and putting them on chain through NFT invocing and validators. Currently, only 23% of the worlds population has access to credit. This project was built to reach 99% of people by tackling cash transactions. This front end is used to interact with Krypto Kredit smart contracts to create and sign invoices from an invoicer and a payer.
 
 ## Integration on ETHDenver 2023 Hackaton
