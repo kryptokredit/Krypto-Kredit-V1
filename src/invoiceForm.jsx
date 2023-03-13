@@ -14,24 +14,24 @@ function InvoiceForm() {
   const [validatorWalletAddress, setValidatorWalletAddress] = useState();
   const [user, setUser] = useState("");
 
- React.useEffect(() => {
-   async function fetchAccount() {
-     if (window.ethereum) {
-       try {
-         await window.ethereum.enable();
-         const accounts = await window.ethereum.request({
-           method: "eth_accounts",
-         });
-         setUser(accounts[0]);
-         console.log("ACCOUNTSS", accounts[0]);
-       } catch (error) {
-         console.log(error);
-       }
-     }
-   }
-   fetchAccount();
- }, [user]);
- 
+  React.useEffect(() => {
+    async function fetchAccount() {
+      if (window.ethereum) {
+        try {
+          await window.ethereum.enable();
+          const accounts = await window.ethereum.request({
+            method: "eth_accounts",
+          });
+          setUser(accounts[0]);
+          console.log("ACCOUNTSS", accounts[0]);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    fetchAccount();
+  }, [user]);
+
   const toggleOptions = () => {
     setOptionsVisible(!optionsVisible);
   };
@@ -51,10 +51,10 @@ function InvoiceForm() {
     console.log("Late Fee:", event.target.value);
   };
 
-const handleDueDateChange = (timestamp) => {
-  console.log("handleDueDateChange", timestamp);
-  setDueDate(timestamp);
-};
+  const handleDueDateChange = (timestamp) => {
+    console.log("handleDueDateChange", timestamp);
+    setDueDate(timestamp);
+  };
 
   const handlePayerWalletAddressChange = (event) => {
     setPayerWalletAddress(event.target.value);
@@ -71,25 +71,28 @@ const handleDueDateChange = (timestamp) => {
     console.log("Description:", event.target.value);
   };
 
-  async function handleCreation(){
-    
+  async function handleCreation() {
     const Web3 = require("web3");
 
     // Instantiate a Web3 instance using window.ethereum as the provider
     const abi = require("./abis/abi.json");
 
     // Create a new instance of the web3 library using an Ethereum node URL
-    const web3 = new Web3(
-      window.ethereum
-    );
+    const web3 = new Web3(window.ethereum);
 
     // Create a new instance of the contract object
     const contractAddress = "0x0F97AAB884B8d1A49B0a4941B77fe08D8Ad19696";
     const contract = new web3.eth.Contract(abi, contractAddress);
-    console.log(amount,dueDate,payerWalletAddress,validatorWalletAddress,lateFee)
-    console.log("FACTORY CONTRACT",contract)
+    console.log(
+      amount,
+      dueDate,
+      payerWalletAddress,
+      validatorWalletAddress,
+      lateFee
+    );
+    console.log("FACTORY CONTRACT", contract);
     const id = await contract.methods.invoiceCount().call();
-    const idNumber = parseInt(id)+1;
+    const idNumber = parseInt(id) + 1;
     console.log("This is the ID", idNumber);
     await createInvoice(
       amount,
@@ -98,7 +101,8 @@ const handleDueDateChange = (timestamp) => {
       validatorWalletAddress,
       lateFee,
       idNumber
-    );}
+    );
+  }
   const [creditScoreData, setCreditScoreData] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -170,8 +174,8 @@ const handleDueDateChange = (timestamp) => {
           Create an Invoice
         </h1>
         <form>
-          <div className="rowmb-2">
-            <div className="col-lg-6mb-2 mb-lg-0">
+          <div className="row mb-4">
+            <div className="col-lg-12 mb-4 mb-lg-0">
               <div className="form-group my-3">
                 <label htmlFor="input1" className="text-dark">
                   Amount
@@ -189,38 +193,71 @@ const handleDueDateChange = (timestamp) => {
                 />
               </div>
             </div>
-            <div className="col-lg-6">
-              <div
-                className="form-group my-3"
-                style={{ display: "flex", flexDirection: "column" }}
-              >
-                <label
-                  className="text-dark"
-                  htmlFor="input3"
-                  style={{ marginBottom: "5px" }}
+            <div className="row" style={{ marginTop: "6%" }}>
+              <div className="col-lg-6">
+                <div
+                  className="form-group my-3"
+                  style={{ display: "flex", flexDirection: "column" }}
                 >
-                  Due Date
-                </label>
-                <input
-                  style={{ border: "2px solid black", borderRadius: "5px" }}
-                  type="datetime-local"
-                  id="input3"
-                  name="trip-start"
-                  value={
-                    dueDate ? new Date(dueDate).toISOString().slice(0, 16) : ""
-                  }
-                  min={new Date().toISOString().slice(0, 16)}
-                  onChange={(e) => {
-                    const date = new Date(e.target.value);
-                    const timestamp = date.getTime();
-                    handleDueDateChange(timestamp);
-                  }}
-                ></input>
+                  <label
+                    className="text-dark"
+                    htmlFor="input3"
+                    style={{ marginBottom: "5px" }}
+                  >
+                    Due Date
+                  </label>
+                  <select
+                    style={{ border: "2px solid black", borderRadius: "5px" }}
+                    id="input3"
+                    name="dueDate"
+                    value={
+                      dueDate
+                        ? new Date(dueDate).toISOString().slice(0, 16)
+                        : ""
+                    }
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const days = parseInt(value);
+                      const timestamp =
+                        new Date().getTime() + days * 24 * 60 * 60 * 1000;
+                      handleDueDateChange(timestamp);
+                    }}
+                  >
+                    <option value="">
+                      {dueDate
+                        ? new Date(dueDate).toLocaleDateString()
+                        : "Select a due date"}
+                    </option>
+                    <option value="30">30 days</option>
+                    <option value="60">60 days</option>
+                    <option value="90">90 days</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="col-lg-6">
+                <div className="form-group">
+                  <label htmlFor="input4" className="text-dark">
+                    Enter Wallet address of payer{" "}
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="input4"
+                    value={payerWalletAddress}
+                    onChange={handlePayerWalletAddressChange}
+                    style={{ border: "2px solid #555", marginTop: "5%" }}
+                    placeholder="Wallet Address"
+                  />
+                  <p style={{ color: "red", fontWeight: "bold" }}>
+                    Score: {isLoading ? "Loading..." : creditScoreData.score}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="rowmb-2">
+          <div className="row mb-2">
             <div className="col-lg-6mb-2 mb-lg-0">
               <div className="form-group my-3">
                 <label htmlFor="input3" className="text-dark">
@@ -238,7 +275,7 @@ const handleDueDateChange = (timestamp) => {
                   />
                   <div
                     className="position-absolute"
-                    style={{ top: 3, right: 5 }}
+                    style={{ top: 1, right: 5 }}
                   >
                     <button
                       type="button"
@@ -274,8 +311,9 @@ const handleDueDateChange = (timestamp) => {
                 </div>
               </div>
             </div>
-            <div className="d-flex">
-              <img
+          </div>
+          {/* <div className="d-flex"> */}
+          {/* <img
                 src="https://uploads-ssl.webflow.com/6384dc706c77d5664d1a1d65/6384dc706c77d5d2fc1a1dbd_logo.png"
                 alt="spectral logo"
                 style={{
@@ -286,9 +324,9 @@ const handleDueDateChange = (timestamp) => {
                   display: "block",
                   margin: "0 auto",
                 }}
-              />
+              /> */}
 
-              <div className="d-flex justify-content-center text-center">
+          {/* <div className="d-flex justify-content-center text-center">
                 <button
                   type="button"
                   className="d-flex justify-content-center w-100 h-50px"
@@ -297,72 +335,45 @@ const handleDueDateChange = (timestamp) => {
                   Calculate Spectral Score
                 </button>
               </div>
-            </div>
+            </div> */}
 
+          <div className="row d-flex">
             <div className="col-lg-6">
-              <div className="form-group my-3">
-                <div className="d-flex">
-                  <label style={{}} htmlFor="input4" className="text-dark">
-                    Enter Wallet address of payer/{" "}
-                  </label>
-                  <p
-                    style={{
-                      color: "red",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Score: {isLoading ? "Loading..." : creditScoreData.score}
-                  </p>
-                </div>
+              <div className="form-group mt-3">
+                <label htmlFor="input6" className="text-dark">
+                  Late Fee
+                </label>
                 <input
-                  type="text"
+                  value={lateFee}
+                  onChange={handleLateFeeChange}
+                  type="number"
+                  min="1"
+                  step="any"
                   className="form-control"
-                  id="input4"
-                  value={payerWalletAddress}
-                  onChange={handlePayerWalletAddressChange}
+                  id="input6"
                   style={{ border: "2px solid #555" }}
-                  placeholder="Wallet Address"
+                  placeholder=""
                 />
               </div>
             </div>
-            <div className="rowmb-2">
-              <div className="col-lg-6mb-2 mb-lg-0">
-                <div className="form-group my-3">
-                  <label htmlFor="input6" className="text-dark">
-                    Late Fee
-                  </label>
-                  <input
-                    value={lateFee}
-                    onChange={handleLateFeeChange}
-                    type="number"
-                    min="1"
-                    step="any"
-                    className="form-control"
-                    id="input6"
-                    style={{ border: "2px solid #555" }}
-                    placeholder=""
-                  />
-                </div>
-              </div>
-              <div className="col-lg-6mb-2 mb-lg-0">
-                <div className="form-group my-3">
-                  <label htmlFor="input7" className="text-dark">
-                    Validator Wallet Address
-                  </label>
-                  <input
-                    value={validatorWalletAddress}
-                    onChange={handleValidatorWalletAddressChange}
-                    type="text"
-                    className="form-control"
-                    id="input1"
-                    style={{ border: "2px solid #555" }}
-                    placeholder="optional"
-                  />
-                </div>
+            <div className="col-lg-6 mb-2">
+              <div className="form-group my-3">
+                <label htmlFor="input7" className="text-dark">
+                  Validator Wallet Address
+                </label>
+                <input
+                  value={validatorWalletAddress}
+                  onChange={handleValidatorWalletAddressChange}
+                  type="text"
+                  className="form-control"
+                  id="input1"
+                  style={{ border: "2px solid #555" }}
+                  placeholder="optional"
+                />
               </div>
             </div>
-            <div></div>
           </div>
+
           <div></div>
           <div className="rowmb-2">
             <div className="col-lg-12">
