@@ -1,4 +1,4 @@
-import { signInvoicePayer } from "../components/factoryWeb3";
+import { signInvoicePayer, getInvoice, payInvoice } from "../components/factoryWeb3";
 export const allColumns = [
   {
     name: <span style={{ fontWeight: "bold" }}>ID</span>,
@@ -45,10 +45,38 @@ export const allColumns = [
     cell: (row) => (
       <button
         className="btn btn-primary"
-        onClick={() => signInvoicePayer(row.idInvoice)}
+        onClick={async () => {
+          const data = await getInvoice(row.idInvoice);
+          console.log("THIS IS THE DATA OF THE SIGNATURE", data.payerSignature);
+          if (data.payerSignature === null) {
+            signInvoicePayer(row.idInvoice);
+          } else {
+          }
+        }}
         style={{ width: "120px", height: "auto" }}
       >
-        {window.innerWidth < 768 ? "View" : "View Invoice"}
+        {window.innerWidth < 768 ? "Sign" : "Sign Invoice"}
+      </button>
+    ),
+  },
+  {
+    name: (
+      <span style={{ fontWeight: "bold" }}>
+        {window.innerWidth < 768 ? "Pay" : "Pay Invoice"}
+      </span>
+    ),
+    selector: "pay",
+    cell: (row) => (
+      <button
+        className="btn btn-primary"
+        onClick={async () => {
+          const data = await getInvoice(row.idInvoice);
+          console.log("THIS IS THE DATA OF THE INVOIDEEEEEE!!!!!", data);
+          payInvoice(row.idInvoice,row.amount);
+        }}
+        style={{ width: "120px", height: "auto" }}
+      >
+        {window.innerWidth < 768 ? "Pay" : "Pay Invoice"}
       </button>
     ),
   },

@@ -9,7 +9,6 @@ import {
 } from "./helpers/columns";
 const { ApolloClient, InMemoryCache, gql } = require("@apollo/client");
 
-
 // const conditionalRowStyles = [
 //   {
 //     when: row => row.status === "unpaid",
@@ -31,143 +30,95 @@ const { ApolloClient, InMemoryCache, gql } = require("@apollo/client");
 //   },
 // ];
 
-const allData = [
-  {
-    id: 1,
-    Name: "Maya",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "unpaid",
-  },
-  {
-    id: 2,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "paid",
-  },
-  {
-    id: 3,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "unpaid",
-  },
-  {
-    id: 4,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "outstanding",
-  },
-  {
-    id: 5,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "paid",
-  },
-  {
-    id: 6,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "outstanding",
-  },
-  {
-    id: 7,
-    Name: "Miguel",
-    Amount: "2 ETH",
-    DueDate: "2/30/2025",
-    status: "unpaid",
-  },
-];
-
 function InvoiceList() {
-
-  
   const [selectedStatus, setSelectedStatus] = useState("all");
   // const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [columns, setColumns] = useState(allColumns);
   const [account, setAccount] = useState("");
-  const [ graphData, setGraphData ] = useState("");
-    const [isHovering, setIsHovering] = useState(false);
-    const [data, setData] = useState(graphData);
+  const [graphData, setGraphData] = useState("");
+  const [isHovering, setIsHovering] = useState(false);
+  const [data, setData] = useState(graphData);
 
-const GET_INVOICE_CREATEDS_QUERY = gql`
-  query GetPotentialInvoices($invoicer: String!) {
-    potentialInvoices(where: { invoicer: $invoicer }) {
-      id
-      idInvoice
-      invoicer
-      payer
-      dueDate
-      fee
-      amount
-      blockNumber
-      blockTimestamp
+  const GET_INVOICE_CREATEDS_QUERY = gql`
+    query GetPotentialInvoices($invoicer: String!) {
+      potentialInvoices(
+        where: { invoicer: $invoicer }
+        orderBy: idInvoice
+        orderDirection: desc
+      ) {
+        id
+        idInvoice
+        invoicer
+        payer
+        dueDate
+        fee
+        amount
+        blockNumber
+        blockTimestamp
+      }
     }
-  }
-`;
-const API_URL = "https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph";
+  `;
+  const API_URL =
+    "https://api.thegraph.com/subgraphs/name/luiscmogrovejo/factory-graph";
 
-const client = useMemo(() => new ApolloClient({
-  uri: API_URL,
-  cache: new InMemoryCache(),
-}),[]);
+  const client = useMemo(
+    () =>
+      new ApolloClient({
+        uri: API_URL,
+        cache: new InMemoryCache(),
+      }),
+    []
+  );
 
-const getGraph = useCallback(async () => {
-  if (account) {
-    try {
-      const { data } = await client.query({
-        query: GET_INVOICE_CREATEDS_QUERY,
-        variables: {
-          invoicer: account
+  const getGraph = useCallback(async () => {
+    if (account) {
+      try {
+        const { data } = await client.query({
+          query: GET_INVOICE_CREATEDS_QUERY,
+          variables: {
+            invoicer: account,
+          },
+        });
+        console.log("DATA", data);
+        setGraphData(data.potentialInvoices);
+      } catch (error) {
+        console.log("Error fetching data: ", error);
+      }
+    }
+  }, [account, client, GET_INVOICE_CREATEDS_QUERY]);
+
+  useEffect(() => {
+    async function fetchAccount() {
+      // Check if Web3 is available and if Metamask is installed
+      if (window.ethereum) {
+        try {
+          // Request account access if needed
+          await window.ethereum.enable();
+
+          // Get the user's Metamask account address
+          const accounts = await window.ethereum.request({
+            method: "eth_accounts",
+          });
+
+          // Save the account to the state
+          setAccount(accounts[0]);
+          console.log("ACCOUNTSS", accounts[0]);
+          await getGraph();
+        } catch (error) {
+          console.log(error);
         }
-      });
-      console.log("DATA", data);
-      setGraphData(data.potentialInvoices);
-    } catch (error) {
-      console.log("Error fetching data: ", error);
+      }
     }
-  }
-}, [account, client, GET_INVOICE_CREATEDS_QUERY]);
 
-
- useEffect(() => {
-   async function fetchAccount() {
-     // Check if Web3 is available and if Metamask is installed
-     if (window.ethereum) {
-       try {
-         // Request account access if needed
-         await window.ethereum.enable();
-
-         // Get the user's Metamask account address
-         const accounts = await window.ethereum.request({
-           method: "eth_accounts",
-         });
-
-         // Save the account to the state
-         setAccount(accounts[0]);
-         console.log("ACCOUNTSS", accounts[0]);
-         await getGraph();
-       } catch (error) {
-         console.log(error);
-       }
-     }
-   }
-
-   fetchAccount();
- }, [getGraph]);
-  
-
+    fetchAccount();
+  }, [getGraph]);
 
   const filterData = (status) => {
     if (status === "all") {
       setData(graphData);
       setColumns(allColumns);
     } else if (status === "unpaid") {
-      console.log("UNPAID FILTAR",graphData)
+      console.log("UNPAID FILTAR", graphData);
       setData(graphData.filter((item) => item.paid === false));
 
       setColumns(unpaidColumns);

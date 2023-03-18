@@ -343,7 +343,7 @@ function Header() {
                     }
                   }}
                 >
-                  {stringAccount}
+                  {stringAccount?stringAccount:"Connect"}
                 </button>
               </div>
             </div>
