@@ -124,9 +124,7 @@ export const signInvoicePayer = async (id) => {
     .call();
   console.log("message", message);
   const signature = await signMessageWithMetaMask(message);
-  await contract.methods
-    .signInvoicePayer(id, signature)
-    .send({ from: account });
+  await contract.methods.signInvoicePayer(id, signature).send({ from: account });
 };
 
 export const signInvoiceValidator = async (id) => {
@@ -170,7 +168,9 @@ export const mintTheInvoice = async (id) => {
 
 export const payInvoice = async (id, amount) => {
   const account = await fetchAccount();
-  await contract.methods.payInvoice(id).send({ from: account, value: amount });
+  await contract.methods
+    .payInvoice(id)
+    .send({ from: account, value: amount });
 };
 
 export const requestRenegotiation = async (

@@ -43,7 +43,11 @@ function PayerInvoiceList() {
 
   const GET_POTENTIAL_INVOICES = gql`
     query GetPotentialInvoices($payer: String!) {
-      potentialInvoices(where: { payer: $payer }) {
+      potentialInvoices(where: { payer: $payer},        
+        orderBy: idInvoice
+        orderDirection: desc
+      ) {
+        id
         idInvoice
         invoicer
         payer
