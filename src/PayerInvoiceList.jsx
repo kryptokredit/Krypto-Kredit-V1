@@ -28,7 +28,7 @@ function PayerInvoiceList() {
             });
 
             console.log("ACCOUNTSS", accounts[0]);
-            setAccount(accounts[0])
+            setAccount(accounts[0]);
             return accounts[0];
           } catch (error) {
             console.log(error);
@@ -43,7 +43,8 @@ function PayerInvoiceList() {
 
   const GET_POTENTIAL_INVOICES = gql`
     query GetPotentialInvoices($payer: String!) {
-      potentialInvoices(where: { payer: $payer},        
+      potentialInvoices(
+        where: { payer: $payer }
         orderBy: idInvoice
         orderDirection: desc
       ) {
@@ -72,8 +73,6 @@ function PayerInvoiceList() {
     []
   );
 
-
-
   const getGraph = useCallback(async () => {
     if (!account) {
       return;
@@ -85,9 +84,9 @@ function PayerInvoiceList() {
         variables: { payer: account },
       });
       const newArray = data.potentialInvoices.map((row) => {
-        console.log("ROOOOW",row)
+        console.log("ROOOOW", row);
         const invoice = getInvoice(row.idInvoice);
-        console.log("INVOICE",invoice)
+        console.log("INVOICE", invoice);
         const paidInvoice = invoice.paid;
         const outstanding = invoice.dueDate > Date.now();
         return {
@@ -140,7 +139,9 @@ function PayerInvoiceList() {
   return (
     <div>
       {" "}
-      <h1 style={{ textAlign: "center", color: "black" }}>Payer Invoice</h1>
+      <h1 style={{ textAlign: "center", color: "black", marginTop: "5%" }}>
+        Payer Invoice
+      </h1>
       <div
         style={{
           margin: "10vh 5% 5% 5%",

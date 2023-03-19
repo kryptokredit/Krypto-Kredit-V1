@@ -287,12 +287,15 @@ function Header() {
                       as={Nav.Link}
                       style={{ marginRight: "15px" }}
                     >
-                      Invoicer
+                      My Invoices
                     </Dropdown.Toggle>
                     <div className="">
                       <Dropdown.Menu>
                         <Dropdown.Item href="/InvoiceList">
-                          My Invoices
+                          Invoicer
+                        </Dropdown.Item>
+                        <Dropdown.Item href="/PayerInvoiceList">
+                          Payer
                         </Dropdown.Item>
                         <Dropdown.Item href="/InvoiceForm">
                           Create an Invoice
@@ -302,24 +305,18 @@ function Header() {
                   </Dropdown>
                 </div>
 
-                <Dropdown as={Nav.Item}>
-                  <Dropdown.Toggle
-                    as={Nav.Link}
-                    style={{ marginRight: "15px" }}
-                  >
-                    Payer
-                  </Dropdown.Toggle>
-                  <div className="">
-                    <Dropdown.Menu>
-                      <Dropdown.Item href="/PayerInvoiceList">
-                        My Invoices
-                      </Dropdown.Item>
-                      <Dropdown.Item href="/MyDashboard">
-                        My Dashboard
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </div>
-                </Dropdown>
+                <Nav.Item>
+                  <Nav.Link style={{ marginRight: "15px" }} href="/Validator">
+                    Validator
+                  </Nav.Link>
+                </Nav.Item>
+
+                <Nav.Item>
+                  <Nav.Link style={{ marginRight: "15px" }} href="/MyDashboard">
+                    My Dashboard
+                  </Nav.Link>
+                </Nav.Item>
+
                 <button
                   style={{
                     fontSize: "12px" /* adjust the font size as needed */,
@@ -343,7 +340,7 @@ function Header() {
                     }
                   }}
                 >
-                  {stringAccount?stringAccount:"Connect"}
+                  {stringAccount ? stringAccount : "Connect"}
                 </button>
               </div>
             </div>

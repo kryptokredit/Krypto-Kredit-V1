@@ -138,7 +138,9 @@ function InvoiceList() {
   return (
     <div>
       {" "}
-      <h1 style={{ textAlign: "center", color: "black" }}>My Invoices</h1>
+      <h1 style={{ textAlign: "center", color: "black", marginTop: "5%" }}>
+        My Invoices
+      </h1>
       <div
         style={{
           margin: "10vh 5% 5% 5%",
@@ -192,7 +194,7 @@ function InvoiceList() {
             All
           </button>
         </div>
-        <div style={{ border: "3px solid #000080", borderRadius: "20px" }}>
+        <div style={{ border: "3px solid #0c9c4a", borderRadius: "20px" }}>
           <DataTable columns={columns} data={graphData} />
         </div>
 
