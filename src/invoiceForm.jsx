@@ -67,9 +67,6 @@ const newCreditScore = async () => {
             { headers }
           );
           setIsRetryAttempted(true);
-          // setTimeout(() => {
-          //   fetchData();
-          // }, 5000);
           setCreditScoreData(response.data[0]);
         } catch (error) {
           setError(error);
@@ -121,6 +118,7 @@ const newCreditScore = async () => {
   const handlePayerWalletAddressChange = (event) => {
       if (event) {
       setPayerWalletAddress(event.target.value);
+      newCreditScore();
       fetchData();
       console.log("WalletAddress:", event.target.value);
       fetchData();

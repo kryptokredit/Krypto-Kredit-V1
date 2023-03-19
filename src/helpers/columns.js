@@ -1,5 +1,19 @@
 import { mintTheInvoice } from "../components/factoryWeb3";
 
+export function getDataFromTree(unixTimestamp) {
+  const newData = new Date(unixTimestamp * 1000);
+  console.log("THIS IS DATA",newData)
+  const year = newData.getFullYear();
+  const month = String(newData.getMonth() + 1).padStart(2, "0");
+  const day = String(newData.getDate()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day}`;
+
+  console.log(formattedDate);
+  return formattedDate;
+}
+
+
 export const allColumns = [
   {
     name: <span style={{ fontWeight: "bold" }}>ID</span>,
@@ -15,7 +29,9 @@ export const allColumns = [
   },
   {
     name: <span style={{ fontWeight: "bold" }}>Due Date</span>,
-    selector: (row) => row.dueDate,
+    selector: (row) => {
+      getDataFromTree(row.dueDate);
+    },
   },
   {
     name: <span style={{ fontWeight: "bold" }}>Status</span>,
@@ -47,10 +63,7 @@ export const allColumns = [
       <button
         className="btn  btn-sm"
         onClick={() => {
-  
-            mintTheInvoice(row.idInvoice)
-
-          ;
+          mintTheInvoice(row.idInvoice);
         }}
         style={{ width: "80px", height: "auto", backgroundColor: "#12E26C" }}
       >
@@ -59,19 +72,13 @@ export const allColumns = [
     ),
   },
   {
-    name: (
-      <span style={{ fontWeight: "bold" }}>
-        {window.innerWidth < 768 ? "+" : "+ Create an Invoice"}
-      </span>
-    ),
-    selector: "view",
+    name: <span style={{ fontWeight: "bold" }}>Send Soulbound</span>,
     cell: (row) => (
       <button
-        className="btn btn-primary"
-        onClick={() => {}}
-        style={{ width: "120px", height: "auto" }}
+        className="btn btn-danger btn-sm"
+        onClick={() => console.log(`Soulbound ${row.id}`)}
       >
-        {window.innerWidth < 768 ? "View" : "View Invoice"}
+        Send Soulbound
       </button>
     ),
   },
@@ -80,9 +87,12 @@ export const allColumns = [
 export const unpaidColumns = [
   {
     name: <span style={{ fontWeight: "bold" }}>ID</span>,
-    selector: (row) => row.id,
+    selector: (row) => row.idInvoice,
   },
-  { name: <span style={{ fontWeight: "bold" }}>Name</span>, selector: "Name" },
+  {
+    name: <span style={{ fontWeight: "bold" }}>Name</span>,
+    selector: "invoicer",
+  },
   {
     name: <span style={{ fontWeight: "bold" }}>Amount</span>,
     selector: "amount",
@@ -120,9 +130,12 @@ export const unpaidColumns = [
 export const paidColumns = [
   {
     name: <span style={{ fontWeight: "bold" }}>ID</span>,
-    selector: (row) => row.id,
+    selector: (row) => row.idInvoice,
   },
-  { name: <span style={{ fontWeight: "bold" }}>Name</span>, selector: "Name" },
+  {
+    name: <span style={{ fontWeight: "bold" }}>Name</span>,
+    selector: "invoicer",
+  },
   {
     name: <span style={{ fontWeight: "bold" }}>Amount</span>,
     selector: "amount",
@@ -134,7 +147,10 @@ export const paidColumns = [
 ];
 
 export const outstandingColumns = [
-  { name: <span style={{ fontWeight: "bold" }}>Name</span>, selector: "Name" },
+  {
+    name: <span style={{ fontWeight: "bold" }}>Name</span>,
+    selector: "invoicer",
+  },
   {
     name: <span style={{ fontWeight: "bold" }}>Amount</span>,
     selector: "amount",
@@ -142,5 +158,16 @@ export const outstandingColumns = [
   {
     name: <span style={{ fontWeight: "bold" }}>Due Date</span>,
     selector: "dueDate",
+  },
+  {
+    name: <span style={{ fontWeight: "bold" }}>Send Soulbound</span>,
+    cell: (row) => (
+      <button
+        className="btn btn-danger btn-sm"
+        onClick={() => console.log(`Soulbound ${row.id}`)}
+      >
+        Send Soulbound
+      </button>
+    ),
   },
 ];

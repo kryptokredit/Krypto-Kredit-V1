@@ -156,14 +156,14 @@ function InvoiceList() {
         >
           <button
             onClick={() => filterData("paid")}
-            style={{ backgroundColor: "#4E4FE9", color: "white" }}
+            style={{ backgroundColor: "#12E26C", color: "white" }}
             className={`btn  me-2 ${selectedStatus === "paid" ? "active" : ""}`}
           >
             Paid
           </button>
           <button
             onClick={() => filterData("unpaid")}
-            style={{ backgroundColor: "#4E4FE9", color: "white" }}
+            style={{ backgroundColor: "#12E26C", color: "white" }}
             className={`btn  me-2 ${
               selectedStatus === "unpaid" ? "active" : ""
             }`}
@@ -172,7 +172,7 @@ function InvoiceList() {
           </button>
           <button
             onClick={() => filterData("outstanding")}
-            style={{ backgroundColor: "#4E4FE9", color: "white" }}
+            style={{ backgroundColor: "#12E26C", color: "white" }}
             className={`btn me-2 ${
               selectedStatus === "outstanding" ? "active" : ""
             }`}
@@ -182,7 +182,7 @@ function InvoiceList() {
           <button
             onClick={() => filterData("all")}
             style={{
-              backgroundColor: "#4E4FE9",
+              backgroundColor: "#12E26C",
               color: "white",
             }}
             className={`btn btn-success ${
@@ -202,7 +202,7 @@ function InvoiceList() {
             className="btn"
             style={{
               position: "absolute",
-              backgroundColor: "#4E4FE9",
+              backgroundColor: "#0c9c4a",
               top: "25px",
               right: "20px",
               color: "white",
