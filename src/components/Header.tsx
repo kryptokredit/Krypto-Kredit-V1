@@ -271,7 +271,7 @@ function Header() {
       <Navbar bg="light" expand="lg">
         <Navbar.Brand href="/">
           <img
-            src="/KryptoKreditLogo.png"
+            src="/MontLogo.png"
             alt="Logo"
             style={{ width: "250px" }}
           />
@@ -282,10 +282,11 @@ function Header() {
             <div className="d-flex w-auto justify-content-center">
               <div className="d-flex justify-content-around">
                 <div className="">
-                  <Dropdown as={Nav.Item}>
+                  <Dropdown as={Nav.Item}  className= "nav-item">
                     <Dropdown.Toggle
                       as={Nav.Link}
-                      style={{ marginRight: "15px" }}
+                      style={{ marginRight: "15px", fontFamily: "Roboto" }}
+                     
                     >
                       My Invoices
                     </Dropdown.Toggle>
@@ -305,25 +306,25 @@ function Header() {
                   </Dropdown>
                 </div>
 
-                <Nav.Item>
-                  <Nav.Link style={{ marginRight: "15px" }} href="/Validator">
+                <Nav.Item  className= "nav-item">
+                  <Nav.Link style={{ marginRight: "15px", fontFamily: "Roboto" }} href="/Validator">
                     Validator
                   </Nav.Link>
                 </Nav.Item>
 
-                <Nav.Item>
-                  <Nav.Link style={{ marginRight: "15px" }} href="/MyDashboard">
+                <Nav.Item  className= "nav-item">
+                  <Nav.Link style={{ marginRight: "15px", fontFamily: "Roboto" }} href="/MyDashboard">
                     My Dashboard
                   </Nav.Link>
                 </Nav.Item>
 
-                <button
+                <button  className= "nav-item"
                   style={{
                     fontSize: "12px" /* adjust the font size as needed */,
                     fontWeight: "bold",
                     color:
-                      "#fff" /* set the font color to contrast with the background color */,
-                    backgroundColor: "#12E26C",
+                      "black" /* set the font color to contrast with the background color */,
+                    backgroundColor: "#00bfff",
                     border: "none",
                     borderRadius: "4px",
                     padding: "10px 20px",

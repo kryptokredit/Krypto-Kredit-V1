@@ -138,12 +138,12 @@ function InvoiceList() {
   return (
     <div>
       {" "}
-      <h1 style={{ textAlign: "center", color: "black", marginTop: "5%" }}>
+      <h1 style={{ textAlign: "center", color: "black", marginTop: "5%", fontFamily: "Roboto" }}>
         My Invoices
       </h1>
       <div
         style={{
-          margin: "10vh 5% 5% 5%",
+          margin: "5vh 5% 5% 5%",
           padding: "20px",
           borderRadius: "10px 10px 0 0",
           position: "relative",
@@ -158,14 +158,14 @@ function InvoiceList() {
         >
           <button
             onClick={() => filterData("paid")}
-            style={{ backgroundColor: "#12E26C", color: "white" }}
+            style={{ backgroundColor: "#12E26C", color: "black" }}
             className={`btn  me-2 ${selectedStatus === "paid" ? "active" : ""}`}
           >
             Paid
           </button>
           <button
             onClick={() => filterData("unpaid")}
-            style={{ backgroundColor: "#12E26C", color: "white" }}
+            style={{ backgroundColor: "#12E26C", color: "black" }}
             className={`btn  me-2 ${
               selectedStatus === "unpaid" ? "active" : ""
             }`}
@@ -174,7 +174,7 @@ function InvoiceList() {
           </button>
           <button
             onClick={() => filterData("outstanding")}
-            style={{ backgroundColor: "#12E26C", color: "white" }}
+            style={{ backgroundColor: "#12E26C", color: "black" }}
             className={`btn me-2 ${
               selectedStatus === "outstanding" ? "active" : ""
             }`}
@@ -185,7 +185,7 @@ function InvoiceList() {
             onClick={() => filterData("all")}
             style={{
               backgroundColor: "#12E26C",
-              color: "white",
+              color: "black",
             }}
             className={`btn btn-success ${
               selectedStatus === "all" ? "active" : ""
@@ -204,10 +204,10 @@ function InvoiceList() {
             className="btn"
             style={{
               position: "absolute",
-              backgroundColor: "#0c9c4a",
+              backgroundColor: "#12E26C",
               top: "25px",
               right: "20px",
-              color: "white",
+              color: "black",
               fontSize: "15px",
               display: "flex",
               borderRadius: "10px",
