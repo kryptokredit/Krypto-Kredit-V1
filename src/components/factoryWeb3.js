@@ -22,6 +22,7 @@ const web3 = new Web3(window.ethereum);
 const contractAddress = "0x0F97AAB884B8d1A49B0a4941B77fe08D8Ad19696";
 const contract = new web3.eth.Contract(abi, contractAddress);
 
+
 export const derogatoryContractUpdate = async (newAddress) => {
   const account = await fetchAccount();
   await contract.methods
@@ -107,6 +108,13 @@ export const signInvoiceInvoicer = async (id) => {
     .send({ from: account });
 };
 
+
+export const  getInvoice = async (id) => {
+  const account = await fetchAccount();
+  return await contract.methods.getInvoice(id).call({ from: account });
+};
+
+
 export const signInvoicePayer = async (id) => {
   console.log("THISS");
   const account = await fetchAccount();
@@ -126,6 +134,8 @@ export const signInvoicePayer = async (id) => {
   const signature = await signMessageWithMetaMask(message);
   await contract.methods.signInvoicePayer(id, signature).send({ from: account });
 };
+
+
 
 export const signInvoiceValidator = async (id) => {
   console.log("THISS");
@@ -150,10 +160,12 @@ export const signInvoiceValidator = async (id) => {
 };
 async function signMessageWithMetaMask(message) {
   const account = await fetchAccount();
+  console.log("account", account);
+  console.log("message:", message);
   return await window.ethereum
     .request({
       method: "personal_sign",
-      params: [account, message],
+      params: [message, account],
     })
     .catch((error) => {
       console.error("Error signing message:", error); // Handle any errors that occur
@@ -203,10 +215,7 @@ export const closeDeal = async (id) => {
   await contract.methods.closeDeal(id).send({ from: account });
 };
 
-export const getInvoice = async (id) => {
-  const account = await fetchAccount();
-  return await contract.methods.getInvoice(id).call({ from: account });
-};
+
 export const yourInvoices = async (id) => {
   const account = await fetchAccount();
   return await contract.methods.yourInvoices(id).call({ from: account });
