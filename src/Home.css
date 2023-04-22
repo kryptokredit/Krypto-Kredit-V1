@@ -3,13 +3,18 @@
     border-radius: 30px;
     box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1),
       0 5px 15px rgba(0, 0, 0, 0.07);
+
   }
 
   h1 {
+    
+    font-family: Montserrat Alternates;
+  }
+
+  .hero-title {
     background: linear-gradient(to right, #00bfff, #32cd32);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-family: Montserrat Alternates;
   }
   
   
@@ -27,6 +32,17 @@
     font-weight: 600;
     padding: 10px 20px;
   }
+
+  .btn-outline-primary {
+    background-color: #00bfff;
+    color: white;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: white;
+    border-color: #00bfff;
+    color:#00bfff;
+  }
   
   .btn-outline-secondary {
     border-radius: 20px;
@@ -43,7 +59,6 @@
   }
   
   .card {
-    margin-top: 30px;
     margin-bottom: 30px;
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1),
