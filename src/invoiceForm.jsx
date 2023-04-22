@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { signInvoiceInvoicer, createInvoice } from "./components/factoryWeb3";
 import axios from "axios";
+import "./invoiceForm.css";
 
 function InvoiceForm() {
   const [optionsVisible, setOptionsVisible] = useState(false);
@@ -50,7 +51,7 @@ function InvoiceForm() {
           setError(error);
         }
       } else {
-        console.log("ERROR");
+        console.log("ERROR", error);
         setError(error);
       }
     } finally {
@@ -179,26 +180,15 @@ const newCreditScore = async () => {
   };
 
   return (
+    
     <div className="p-4">
-      <div
-        className="container px-lg-5 py-4"
-        style={{
-          border: "2px solid #000080",
-          borderRadius: "7px",
-          maxWidth: "800px",
-          margin: "0 auto",
-          marginTop: "20px",
-          backgroundColor: "#f8f9fa",
-        }}
-      >
-        <h1 style={{ color: "#12E26C" }} className="text-center text-dark mb-4">
-          Create an Invoice
-        </h1>
+      <div className="container px-lg-5 py-4 invoice-container">
+        <h1 className="invoice-title">Create an Invoice</h1>
         <form>
-          <div className="row mb-4">
-            <div className="col-lg-12 mb-4 mb-lg-0">
+        <div className="row">
+            <div className="col-lg-6 col-md-3 mb-4 mb-lg-0">
               <div className="form-group my-3">
-                <label htmlFor="input1" className="text-dark">
+                <label htmlFor="input1" className="invoice-label">
                   Amount
                 </label>
                 <input
@@ -207,208 +197,188 @@ const newCreditScore = async () => {
                   type="number"
                   min="1"
                   step="any"
-                  className="form-control"
+                  className="form-control invoice-input"
                   id="input1"
-                  style={{ border: "2px solid #555" }}
                   placeholder="Enter Amount"
                 />
               </div>
+              
             </div>
-            <div className="row" style={{ marginTop: "6%" }}>
-              <div className="col-lg-6">
-                <div
-                  className="form-group my-3"
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <label
-                    className="text-dark"
-                    htmlFor="input3"
-                    style={{ marginBottom: "5px" }}
-                  >
-                    Due Date
-                  </label>
-                  <select
-                    style={{ border: "2px solid black", borderRadius: "5px" }}
-                    id="input3"
-                    name="dueDate"
-                    value={
-                      dueDate
-                        ? new Date(dueDate).toISOString().slice(0, 16)
-                        : ""
-                    }
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      const days = parseInt(value);
-                      const timestamp =
-                        new Date().getTime() + days * 24 * 60 * 60 * 1000;
-                      handleDueDateChange(timestamp);
-                    }}
-                  >
-                    <option value="">
-                      {dueDate
-                        ? new Date(dueDate).toLocaleDateString()
-                        : "Select a due date"}
-                    </option>
-                    <option value="30">30 days</option>
-                    <option value="60">60 days</option>
-                    <option value="90">90 days</option>
-                  </select>
-                </div>
-              </div>
+  <div className="col-lg-6  mb-lg-0">
+    <div className="form-group my-3 position-relative">
+      <label htmlFor="input3" className="text-dark">
+        Select Token
+      </label>
+      <div className="position-relative">
+        <input
+          type="text"
+          className="form-control"
+          id="input3"
+          value={selectedOption}
+          readOnly
+          onClick={toggleOptions}
+        />
+        <div className="position-absolute">
+          <button
+            type="button"
+            className="btn dropdown btn-light btn-sm"
+            onClick={toggleOptions}
+          >
+            &#x25BC;
+          </button>
+        </div>
 
-              <div className="col-lg-6">
-                <div className="form-group">
-                  <label htmlFor="input4" className="text-dark">
-                    Enter Wallet address of payer{" "}
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="input4"
-                    value={payerWalletAddress}
-                    onChange={handlePayerWalletAddressChange}
-                    style={{ border: "2px solid #555", marginTop: "5%" }}
-                    placeholder="Wallet Address"
-                  />
-                  <p style={{ color: "red", fontWeight: "bold" }}>
-                    Score: {isLoading ? "Loading..." : creditScoreData.score}
-                  </p>
-                </div>
-              </div>
+        {optionsVisible && (
+          <div className="position-absolute mt-2 bg-dark p-2">
+            <div className="text-light" onClick={() => selectOption("ETH")}>
+              ETH
+            </div>
+            <div className="text-light" onClick={() => selectOption("Arb")}>
+              Arb
+            </div>
+            <div className="text-light" onClick={() => selectOption("Poly")}>
+              Poly
             </div>
           </div>
+        )}
+      </div>
+    </div>
+  </div>
 
-          <div className="row mb-2">
-            <div className="col-lg-6mb-2 mb-lg-0">
-              <div className="form-group my-3">
-                <label htmlFor="input3" className="text-dark">
-                  Select Token
-                </label>
-                <div className="position-relative">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="input3"
-                    value={selectedOption}
-                    readOnly
-                    onClick={toggleOptions}
-                    style={{ border: "2px solid #555" }}
-                  />
-                  <div
-                    className="position-absolute"
-                    style={{ top: 1, right: 5 }}
-                  >
-                    <button
-                      type="button"
-                      className="btn btn-light btn-sm"
-                      onClick={toggleOptions}
-                    >
-                      &#x25BC;
-                    </button>
-                  </div>
+</div>
+        
+        
+           <div className="row ">
+  <div className="col-lg-6" >
+    <div className="form-group mt-3 invoice-due-date">
+      <label htmlFor="input3" className="invoice-label">
+        Due Date
+      </label>
+      <select
+        className="form-control invoice-select"
+        id="input3"
+        name="dueDate"
+        value={
+          dueDate
+            ? new Date(dueDate).toISOString().slice(0, 16)
+            : ""
+        }
+        onChange={(e) => {
+          const value = e.target.value;
+          const days = parseInt(value);
+          const timestamp =
+            new Date().getTime() + days * 24 * 60 * 60 * 1000;
+          handleDueDateChange(timestamp);
+        }}
+      >
+        <option value="">
+          {dueDate
+            ? new Date(dueDate).toLocaleDateString()
+            : "Select a due date"}
+        </option>
+        <option value="30">30 days</option>
+        <option value="60">60 days</option>
+        <option value="90">90 days</option>
+      </select>
+    </div>
+  </div>
 
-                  {optionsVisible && (
-                    <div className="position-absolute mt-2 bg-dark p-2">
-                      <div
-                        className="text-light"
-                        onClick={() => selectOption("ETH")}
-                      >
-                        ETH
-                      </div>
-                      <div
-                        className="text-light"
-                        onClick={() => selectOption("Arb")}
-                      >
-                        Arb
-                      </div>
-                      <div
-                        className="text-light"
-                        onClick={() => selectOption("Poly")}
-                      >
-                        Poly
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+              <div className="col-lg-6 custom-col">
+  <div className="form-group">
+    <label htmlFor="input4" className="text-dark custom-label">
+      Enter Wallet address of payer{" "}
+    </label>
+    <input
+      type="text"
+      className="form-control custom-input"
+      id="input4"
+      value={payerWalletAddress}
+      onChange={handlePayerWalletAddressChange}
+      placeholder="Wallet Address"
+    />
+    <p className="custom-score">
+      Score: {isLoading ? "Loading..." : creditScoreData.score}
+    </p>
+  </div>
+</div>
+</div>
 
-          <div className="row d-flex">
-            <div className="col-lg-6">
-              <div className="form-group mt-3">
-                <label htmlFor="input6" className="text-dark">
-                  Late Fee
-                </label>
-                <input
-                  value={lateFee}
-                  onChange={handleLateFeeChange}
-                  type="number"
-                  min="1"
-                  step="any"
-                  className="form-control"
-                  id="input6"
-                  style={{ border: "2px solid #555" }}
-                  placeholder=""
-                />
-              </div>
-            </div>
-            <div className="col-lg-6 mb-2">
-              <div className="form-group my-3">
-                <label htmlFor="input7" className="text-dark">
-                  Validator Wallet Address
-                </label>
-                <input
-                  value={validatorWalletAddress}
-                  onChange={handleValidatorWalletAddressChange}
-                  type="text"
-                  className="form-control"
-                  id="input1"
-                  style={{ border: "2px solid #555" }}
-                  placeholder="optional"
-                />
-              </div>
-            </div>
-          </div>
 
-          <div></div>
-          <div className="rowmb-2">
-            <div className="col-lg-12">
-              <div className="form-group my-3 text-left">
-                <label
-                  htmlFor="input5"
-                  className="text-dark"
-                  style={{ color: "black" }}
-                >
-                  Description of Service
-                </label>
-                <textarea
-                  className="form-control"
-                  id="input5"
-                  value={description}
-                  onChange={handleDescriptionChange}
-                  style={{ border: "2px solid #555" }}
-                  placeholder="Enter a Description"
-                ></textarea>
-              </div>
-            </div>
-          </div>
 
-          <div className="row">
-            <div className="col-lg-12 text-center">
-              <button
-                className="btn btn-lg "
-                style={{ backgroundColor: "#12E26C" }}
-                onClick={(event) => {
-                  event.preventDefault();
-                  handleCreation();
-                  signInvoiceInvoicer();
-                }}
-              >
-                Submit
-              </button>
-            </div>
-          </div>
+
+<div className="row d-flex">
+  <div className="col-lg-6">
+    <div className="form-group mt-3">
+      <label htmlFor="input6" className="text-dark">
+        Late Fee
+      </label>
+      <input
+        value={lateFee}
+        onChange={handleLateFeeChange}
+        type="number"
+        min="1"
+        step="any"
+        className="form-control"
+        id="input6"
+        placeholder=""
+      />
+    </div>
+  </div>
+  <div className="col-lg-6 mb-2">
+    <div className="form-group my-3">
+      <label htmlFor="input7" className="text-dark">
+        Validator Wallet Address
+      </label>
+      <input
+        value={validatorWalletAddress}
+        onChange={handleValidatorWalletAddressChange}
+        type="text"
+        className="form-control"
+        id="input1"
+        placeholder="optional"
+      />
+    </div>
+  </div>
+</div>
+
+
+<div className="row mb-2">
+  <div className="col-lg-12">
+    <div className="form-group my-3 text-left">
+      <label
+        htmlFor="input5"
+        className="text-dark"
+        style={{ color: "black" }}
+      >
+        Description of Service
+      </label>
+      <textarea
+        className="form-control"
+        id="input5"
+        value={description}
+        onChange={handleDescriptionChange}
+        placeholder="Enter a Description"
+      ></textarea>
+    </div>
+  </div>
+</div>
+
+<div className="row">
+  <div className="col-lg-12 text-center">
+    <button
+      className="btn btn-lg "
+      style={{ backgroundColor: "#12E26C" }}
+      onClick={(event) => {
+        event.preventDefault();
+        handleCreation();
+        signInvoiceInvoicer();
+      }}
+    >
+      Submit
+    </button>
+  </div>
+</div>
+
         </form>
       </div>
     </div>

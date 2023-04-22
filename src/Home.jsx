@@ -7,14 +7,14 @@ function Home() {
       <div className="container">
         <div className="row align-items-center py-5">
           <div className="col-md-6">
-            <h1 className="display-5 fw-bold lh-1 mb-3 text-left">
+            <h1 className="display-5 fw-bold lh-1 mb-3 text-left hero-title">
               Join the future of finance, earn credit on chain for your everyday transactions
             </h1>
             <p className="lead mb-4 text-left">
               Redefining Credit: A Peer-to-Peer Approach
             </p>
             <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
-              <button className="btn btn-lg px-4 me-md-2" onClick={() => {window.location.href = "/InvoiceForm";}}>
+              <button className="btn btn-lg btn-outline-primary px-4 me-md-2" onClick={() => {window.location.href = "/InvoiceForm";}}>
                 Get Started
               </button>
               <button className="btn btn-outline-secondary btn-lg px-4" onClick={() => {window.location.href = "https://github.com/kryptokredit";}}>

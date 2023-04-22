@@ -51,6 +51,7 @@ export const allColumns = [
           if (data.payerSignature === null) {
             signInvoicePayer(row.idInvoice);
           } else {
+            console.log("Not working")
           }
         }}
         style={{ width: "120px", height: "auto" }}
