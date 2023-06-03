@@ -16,7 +16,7 @@ We've integrated both their API and SDK solution to validate our costumer. You c
 
 ## HUMA FINANCE
 
-With the integration of Huma evaluation agent (EA) we can monitor the Krypto Kredit invoice subgraphs and checks for metrics for underwriting risk. The Huma EA uses a combination of invoice count, invoices paid, invoices sent, along with metrics on if any invoices have been paid late or if user has recieved any derogatory mark NFTs. Once metrics have been tabulated credit limits are issues to the user and he is granted a line of credit.
+With the integration of Huma evaluation agent (EA) we can monitor the Krypto Kredit invoice subgraphs and checks for metrics for underwriting risk. The Huma EA uses a combination of invoice count, invoices paid, invoices sent, along with metrics on if any invoices have been paid late or if user has recieved any derogatory mark NFTs. Once metrics have been tabulated credit limits are issued to the user and he is granted a line of credit.
 
 ## METAMASK SNAPS
 
